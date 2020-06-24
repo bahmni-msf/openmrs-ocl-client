@@ -11,7 +11,8 @@ import {
   TableHead,
   TableRow,
   Tooltip,
-  Typography
+  Typography,
+  Switch
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { APIDictionaryVersion } from "../types";
@@ -64,6 +65,7 @@ const ReleasedVersions: React.FC<Props> = ({
                   <TableCell>ID</TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Actions</TableCell>
+                  <TableCell>Release Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -80,9 +82,19 @@ const ReleasedVersions: React.FC<Props> = ({
                         variant="text"
                         color="primary"
                       >
-                        View concepts
+                        View
                       </Button>
                     </TableCell>
+                      <TableCell>
+                              <Switch
+                                  id={row.id}
+                                  data-testid={row.id}
+                                  checked={row.released}
+                                   // onChange={handleChange}
+                                  name="checkedB"
+                                  color="primary"
+                              />
+                      </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
