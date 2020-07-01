@@ -21,7 +21,6 @@ import DictionaryVersionForm from "./DictionaryVersionForm";
 
 interface Props {
   versions: APIDictionaryVersion[];
-  subscriptionUrl: string;
   showCreateVersionButton: boolean;
   createDictionaryVersion: Function;
   createVersionLoading: boolean;
@@ -31,7 +30,6 @@ interface Props {
 
 const ReleasedVersions: React.FC<Props> = ({
   versions,
-  subscriptionUrl,
   showCreateVersionButton,
   createDictionaryVersion,
   createVersionLoading,
@@ -62,7 +60,8 @@ const ReleasedVersions: React.FC<Props> = ({
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell>Description</TableCell>
-                  <TableCell>Actions</TableCell>
+                  <TableCell>Concepts</TableCell>
+                  <TableCell>Subscription URL</TableCell>
                   <TableCell>Release Status</TableCell>
                 </TableRow>
               </TableHead>
@@ -82,6 +81,15 @@ const ReleasedVersions: React.FC<Props> = ({
                       >
                         View
                       </Button>
+                    </TableCell>
+                    <TableCell>
+                      <CopyToClipboard text={`${dictionaryUrl}${row.id}/`}>
+                        <Tooltip title={`${dictionaryUrl}${row.id}/`}>
+                          <Button size="small" variant="text" color="primary">
+                            Copy
+                          </Button>
+                        </Tooltip>
+                      </CopyToClipboard>
                     </TableCell>
                       <TableCell>
                               <Switch
@@ -103,13 +111,6 @@ const ReleasedVersions: React.FC<Props> = ({
         )}
         <br />
         <ButtonGroup fullWidth variant="text" color="primary">
-          <CopyToClipboard text={`${BASE_URL}${subscriptionUrl}`}>
-            <Tooltip title={`Copy ${BASE_URL}${subscriptionUrl}`}>
-              <Button disabled={!versionsToDisplay.length}>
-                Copy subscription URL
-              </Button>
-            </Tooltip>
-          </CopyToClipboard>
           {!showCreateVersionButton ? null : (
             <Button onClick={handleClickOpen}>Release new version</Button>
           )}
