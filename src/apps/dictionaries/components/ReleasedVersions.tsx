@@ -13,13 +13,12 @@ import {
     Tooltip,
     Typography,
     Switch,
-    DialogTitle,
-    DialogActions
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import {APIDictionaryVersion, DictionaryVersion} from "../types";
 import DictionaryVersionForm from "./DictionaryVersionForm";
 import { BASE_URL } from "../../../utils";
+import ConfirmationDialog from "../../../utils/components/ConfirmationDialog";
 
 interface Props {
   versions: APIDictionaryVersion[];
@@ -61,15 +60,28 @@ const ReleasedVersions: React.FC<Props> = ({
       setDictionaryVersion(row);
   };
 
-    const [confirmDialogOpen, setConfirmDialogOpen] = React.useState(false);
+  const confirmationMsg = () => {
+      return(
+          <div >
+              <span>Are you sure to mark version </span>
+              <span style={{fontWeight: 'bold'}}>
+                    {dictionaryVersion.id}
+              </span> as {dictionaryVersion.released ? <span style={{color: '#f50057'}}>unreleased</span> :
 
-    const [dictionaryVersion, setDictionaryVersion] = React.useState<DictionaryVersion>(
-        {
-            id: "",
-            released: false,
-            description: "",
-            external_id: ""
-        });
+              <span style={{color: '#f50057'}}>released</span>}?
+          </div>
+      )
+  };
+
+  const [confirmDialogOpen, setConfirmDialogOpen] = React.useState(false);
+
+  const [dictionaryVersion, setDictionaryVersion] = React.useState<DictionaryVersion>(
+    {
+        id: "",
+        released: false,
+        description: "",
+        external_id: ""
+    });
 
     return (
     <Paper className="fieldsetParent">
@@ -139,36 +151,14 @@ const ReleasedVersions: React.FC<Props> = ({
           )}
         </ButtonGroup>
       </fieldset>
-        <Dialog
-            data-testid="confirm-dialog"
-            maxWidth="xs"
-            aria-labelledby="confirmation-dialog-title"
-            open={confirmDialogOpen}
-            onClose={() => setConfirmDialogOpen(false)}
-        >
-            <DialogTitle style={{textAlign: "center"}} id="confirmation-dialog-title">
-                Are you sure to mark&nbsp;
-                <span style={{fontStyle: 'italic'}}>
-                    v{dictionaryVersion.id}
-                </span>&nbsp;as {dictionaryVersion.released ? <span style={{color: '#f50057'}}>unreleased</span> :
-                <span style={{color: '#f50057'}}>released</span>}?
-            </DialogTitle>
-            <DialogActions style={{textAlign: "center"}}>
-                <ButtonGroup
-                    fullWidth
-                    color="primary"
-                    variant="text"
-                    size="medium"
-                >
-                    <Button onClick={() => setConfirmDialogOpen(false)} color="secondary">
-                        No
-                    </Button>
-                    <Button onClick={handleReleaseVersionChange} color="primary">
-                        Yes
-                    </Button>
-                </ButtonGroup>
-            </DialogActions>
-        </Dialog>
+      <ConfirmationDialog
+          open={confirmDialogOpen}
+          setOpen={setConfirmDialogOpen}
+          onConfirm={() => handleReleaseVersionChange()}
+          message={confirmationMsg()}
+          cancelButtonText={"No"}
+          confirmButtonText={"Yes"}
+      />
       <Dialog onClose={handleClose} open={open}>
         <DictionaryVersionForm
           onSubmit={createDictionaryVersion}

@@ -107,41 +107,57 @@ describe("toggleButton for dictionary release status", () => {
         });
 
         getByRole('checkbox').click();
-        // fireEvent.change(
-        //     getByRole('checkbox'),
-        //     { target: { checked: '' } }
-        // )
         const dialog = getByTestId('confirm-dialog');
         expect(dialog).toBeTruthy();
     });
 
-    xit('check if confirmation dialog for releasing unreleased dictionary contains correct confirmation message', () => {
+    it('check if confirmation dialog for releasing unreleased dictionary contains correct confirmation message', () => {
         const { getByRole, getByTestId} = renderUI({
             versions: [unreleasedVersion]
         });
 
         getByRole('checkbox').click();
         const dialog = getByTestId('confirm-dialog');
-        expect(getByText( dialog,"Are you sure to mark v2 as released?")).toBeInTheDocument();
+        expect(getByText( dialog,"Are you sure to mark version")).toBeInTheDocument();
+        expect(getByText( dialog,"released")).toBeInTheDocument();
+        expect(getByText( dialog,"2")).toBeInTheDocument();
     });
 
-    xit('check if confirmation dialog for un releasing released dictionary contains correct confirmation message', () => {
+    it('check if confirmation dialog for un releasing released dictionary contains correct confirmation message', () => {
         const { getByRole, getByTestId} = renderUI({
             versions: [releasedVersion]
         });
 
         getByRole('checkbox').click();
         const dialog = getByTestId('confirm-dialog');
-        expect(getByText( dialog,"Are you sure to mark v2 as unreleased?")).toBeInTheDocument();
+        expect(getByText( dialog,"Are you sure to mark version")).toBeInTheDocument();
+        expect(getByText( dialog,"unreleased")).toBeInTheDocument();
+        expect(getByText( dialog,"2")).toBeInTheDocument();
     });
 
-    xit('check if onclick of unreleased dictionary dialog confirm button changes status to released', () => {
-
+    it('check if onclick of released dictionary dialog yes button makes the required function call', () => {
+        const spyOnEditDictionaryVersion = jest.fn();
+        const { getByRole, getByTestId} = renderUI({
+            versions: [releasedVersion],
+            editDictionaryVersion: spyOnEditDictionaryVersion
+        });
+        getByRole('checkbox').click();
+        const dialog = getByTestId('confirm-dialog');
+        getByText(dialog,"Yes").click();
+        expect(spyOnEditDictionaryVersion).toBeCalledWith({"id": "2", "released": false});
     });
 
-    xit('check if onclick of released dictionary dialog confirm button changes status to unreleased', () => {
-
-
+    it('check if onclick of unreleased dictionary dialog no button does not change the status to released', () => {
+        const spyOnEditDictionaryVersion = jest.fn();
+        const { getByRole, getByTestId} = renderUI({
+            versions: [unreleasedVersion],
+            editDictionaryVersion: spyOnEditDictionaryVersion
+        });
+        getByRole('checkbox').click();
+        const dialog = getByTestId('confirm-dialog');
+        getByText(dialog,"No").click();
+        expect(getByTestId('2').closest('span')).not.toHaveClass('Mui-checked');
+        expect(spyOnEditDictionaryVersion).not.toBeCalled();
     });
 
 });
