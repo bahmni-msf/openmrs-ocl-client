@@ -4,8 +4,8 @@ import {APISource, SourceState} from "../../types";
 import {AuthState} from "../../../authentication";
 import {DictionaryState} from "../../../dictionaries";
 import {ConceptsState} from "../../../concepts";
-import {mapDispatchToProps, mapStateToProps} from "../../pages/ViewPersonalSourcesPage";
-import {retrievePersonalSourcesAction} from "../../redux";
+import {mapDispatchToProps, mapStateToProps} from "../../pages/ViewPublicSourcesPage";
+import {retrievePublicSourcesAction} from "../../redux";
 
 const testSource: APISource = {
     id: "MSF-SOURCE",
@@ -13,7 +13,7 @@ const testSource: APISource = {
     name: "MSF Source",
     full_name: "MSF Source",
     source_type: "Dictionary",
-    public_access: "None",
+    public_access: "View",
     default_locale: "en",
     website: "http://msf.org/",
     description: "A universal code system for identifying laboratory and clinical observations.",
@@ -30,7 +30,9 @@ const testSource: APISource = {
 };
 
 const initialSources: SourceState = {
-    sources: [{items: [testSource], responseMeta: {key: false}}]
+    sources: [
+        {items: []},
+        {items: [testSource], responseMeta: {key: false}}]
 };
 
 const authState: AuthState = {isLoggedIn: true};
@@ -57,7 +59,7 @@ const currentState: AppState = {
 };
 
 
-describe('ViewPersonalSourcesPage', function () {
+describe('ViewPublicSourcesPage', function () {
 
     it('should list down all the props of the state', () => {
         expect(mapStateToProps(currentState).loading).not.toBeNull();
@@ -78,6 +80,6 @@ describe('ViewPersonalSourcesPage', function () {
     });
 
     it('should point to correct dispatch action', () => {
-        expect(mapDispatchToProps.retrieveSources).toBe(retrievePersonalSourcesAction);
+        expect(mapDispatchToProps.retrieveSources).toBe(retrievePublicSourcesAction);
     })
 });
