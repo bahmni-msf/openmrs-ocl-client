@@ -233,11 +233,14 @@ const ConceptForm: React.FC<Props> = ({
   const toggleExternalIDEditable = () =>
     setExternalIDEditable(!isExternalIDEditable);
 
+
   useEffect(() => {
     const { current: currentRef } = formikRef;
     if (currentRef) {
       currentRef.setSubmitting(loading || !allowEditing);
     }
+    // the below line is to fetch new random uuid
+    initialValues.external_id = uuid();
   }, [loading, allowEditing]);
 
   useEffect(() => {
