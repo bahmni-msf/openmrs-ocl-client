@@ -153,6 +153,35 @@ const SourceForm: React.FC<Props> = ({
         )
     };
 
+    const showUserName = () => {
+        return <>
+            {profile ? (
+                <MenuItem value={profile.url}>
+                    {profile.username}(You)
+                </MenuItem>
+            ) : (
+                ""
+            )}
+        </>;
+    }
+
+    const showOrganisationHeader = () => {
+        return usersOrgs.length > 0 ? (
+            <ListSubheader>Your Organizations</ListSubheader>
+        ) : null;
+    }
+
+    const showUserOrganisations = () => {
+        return <>
+            {showOrganisationHeader}
+            {usersOrgs.map(org => (
+                <MenuItem key={org.id} value={org.url}>
+                    {org.name}
+                </MenuItem>
+            ))}
+        </>;
+    }
+
     return (
         <div id="source-form" className={classes.sourceForm}>
             <Formik
@@ -216,26 +245,11 @@ const SourceForm: React.FC<Props> = ({
                                 rowsMax={4}
                                 component={Select}
                             >
-                                {profile ? (
-                                    <MenuItem value={profile.url}>
-                                        {profile.username}(You)
-                                    </MenuItem>
-                                ) : (
-                                    ""
-                                )}
-                                {usersOrgs.length > 0 ? (
-                                    <ListSubheader>Your Organizations</ListSubheader>
-                                ) : (
-                                    ""
-                                )}
-                                {usersOrgs.map(org => (
-                                    <MenuItem key={org.id} value={org.url}>
-                                        {org.name}
-                                    </MenuItem>
-                                ))}
+                                {showUserName}
+                                {showUserOrganisations}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="owner_url" component="span" />
+                                <ErrorMessage name="owner_url" component="span"/>
                             </Typography>
                         </FormControl>
                         <FormControl
