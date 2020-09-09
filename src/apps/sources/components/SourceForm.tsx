@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import {
     Button,
     FormControl,
-    InputLabel, ListSubheader,
+    InputLabel,
     makeStyles,
     MenuItem,
     Typography
@@ -10,16 +10,21 @@ import {
 import {
     getCustomErrorMessage,
     getPrettyError,
-    LOCALES,
     CONTEXT
 } from "../../../utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Select, TextField } from "formik-material-ui";
 import { snakeCase } from "lodash";
-
 import { Source } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
 import * as Yup from "yup";
+import {
+    showDefaultLocale,
+    showOrganisationHeader,
+    showUserName,
+    showUserOrganisations,
+    supportedLocalesLabel
+} from "../../containers/components/FormUtils";
 
 interface Props {
     onSubmit?: Function;
@@ -108,19 +113,6 @@ const SourceForm: React.FC<Props> = ({
         });
     }, [errors]);
 
-    const supportedLocalesLabel = (values: any) => {
-        const labels: Array<JSX.Element> = [];
-        LOCALES.filter(
-            ({ value }) => value !== values.default_locale
-        ).map(({ value, label }) => (
-            labels.push(
-                <MenuItem key={value} value={value} style={{whiteSpace: 'normal'}}>
-                    { label }
-                </MenuItem>
-            )
-        ))
-        return labels;
-    };
     const apiErrorStatusCode = {
         403: `You don't have permission to ${context} a source in this Organisation`
     };
@@ -152,35 +144,6 @@ const SourceForm: React.FC<Props> = ({
             </div>
         )
     };
-
-    const showUserName = () => {
-        return <>
-            {profile ? (
-                <MenuItem value={profile.url}>
-                    {profile.username}(You)
-                </MenuItem>
-            ) : (
-                ""
-            )}
-        </>;
-    }
-
-    const showOrganisationHeader = () => {
-        return usersOrgs.length > 0 ? (
-            <ListSubheader>Your Organizations</ListSubheader>
-        ) : null;
-    }
-
-    const showUserOrganisations = () => {
-        return <>
-            {showOrganisationHeader}
-            {usersOrgs.map(org => (
-                <MenuItem key={org.id} value={org.url}>
-                    {org.name}
-                </MenuItem>
-            ))}
-        </>;
-    }
 
     return (
         <div id="source-form" className={classes.sourceForm}>
@@ -245,8 +208,9 @@ const SourceForm: React.FC<Props> = ({
                                 rowsMax={4}
                                 component={Select}
                             >
-                                {showUserName}
-                                {showUserOrganisations}
+                                {showUserName(profile)}
+                                {showOrganisationHeader(usersOrgs)}
+                                {showUserOrganisations(usersOrgs)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
                                 <ErrorMessage name="owner_url" component="span"/>
@@ -295,11 +259,7 @@ const SourceForm: React.FC<Props> = ({
                                 id="default_locale"
                                 component={Select}
                             >
-                                {LOCALES.map(({ value, label }) => (
-                                    <MenuItem key={value} value={value}>
-                                        {label}
-                                    </MenuItem>
-                                ))}
+                                {showDefaultLocale()}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
                                 <ErrorMessage name="default_locale" component="span" />
