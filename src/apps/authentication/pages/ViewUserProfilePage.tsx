@@ -1,28 +1,29 @@
 import React from "react";
-import UserForm from "../components/UserForm";
-import UserTokenDetails from "../components/UserTokenDetails";
-import { Grid, Paper, Typography } from "@material-ui/core";
-import { connect } from "react-redux";
-import {APIProfile, getUserDetailsAction, profileSelector} from "../../authentication";
-import { AppState } from "../../../redux";
-import { ProgressOverlay } from "../../../utils/components";
+import {Grid, Paper, Typography} from "@material-ui/core";
+import {connect} from "react-redux";
+import {APIOrg, APIProfile, getUserDetailsAction, profileSelector} from "../../authentication";
+import {AppState} from "../../../redux";
+import {ProgressOverlay} from "../../../utils/components";
 import Header from "../../../components/Header";
+import {orgsSelector} from "../redux/reducer";
+import {UserForm, UserTokenDetails, UserOrganisationDetails} from "../components";
 
 
 interface Props {
     loading: boolean;
     errors?: any;
-    APIProfile?: APIProfile;
+    userProfile?: APIProfile;
+    userOrganisations?: APIOrg[];
     userToken?: string;
 }
 
 export const ViewUserProfilePage: React.FC<Props> = ({
                                                          loading,
                                                          errors,
-                                                         APIProfile,
+                                                         userProfile,
+                                                         userOrganisations,
                                                          userToken
-                                                }: Props) => {
-
+                                                     }: Props) => {
     return (
         <Header
             title="Your Profile"
@@ -44,19 +45,22 @@ export const ViewUserProfilePage: React.FC<Props> = ({
                                 Details
                             </Typography>
                             <UserForm
-                                savedValues={APIProfile}
+                                savedValues={userProfile}
                                 loading={true}
                             />
                         </fieldset>
                     </Paper>
                 </Grid>
                 <Grid item xs={5} container spacing={2}>
-                    <Grid item xs={12} component="div">
-                        <Grid item xs={12} component='div'>
-                            <UserTokenDetails
-                                token={userToken}
-                            />
-                        </Grid>
+                    <Grid item xs={12} component='div'>
+                        <UserTokenDetails
+                            token={userToken}
+                        />
+                    </Grid>
+                    <Grid item xs={12} component='div'>
+                        <UserOrganisationDetails
+                            orgs={userOrganisations}
+                        />
                     </Grid>
                 </Grid>
             </ProgressOverlay>
@@ -67,7 +71,8 @@ export const ViewUserProfilePage: React.FC<Props> = ({
 const mapStateToProps = (state: AppState) => ({
     loading: false,
     errors: undefined,
-    APIProfile: profileSelector(state),
+    userProfile: profileSelector(state),
+    userOrganisations: orgsSelector(state),
     userToken: state.auth.token
 });
 const mapDispatchToProps = {

@@ -25,7 +25,7 @@ import {
 import { ViewPersonalSourcesPage } from "./apps/sources/pages";
 import ViewOrgSourcesPage from "./apps/sources/pages/ViewOrgSourcesPage";
 import ViewPublicSourcesPage from "./apps/sources/pages/ViewPublicSourcesPage";
-import ViewUserProfilePage from "./apps/authentication/pages/ViewUserProfilePage";
+import { ViewUserProfilePage } from "./apps/authentication/pages";
 
 import SourceRoutes, {} from "./apps/sources";
 import CreateSourcePage from "./apps/sources/pages/CreateSourcePage";
