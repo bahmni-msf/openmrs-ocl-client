@@ -84,6 +84,21 @@ code {
   }
 }
 
+#viewUserProfilePage {
+  #user-form {
+    .MuiInput-formControl {
+      .MuiInput-input.Mui-disabled {
+        color: black;
+        -moz-user-select: text;
+      }
+
+      svg {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
 .link {
   text-decoration: none;
   color: inherit;
