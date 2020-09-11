@@ -125,115 +125,142 @@ const ContainerReleasedVersions: React.FC<Props> = ({
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
+
+  const copySubscriptionUrl = () => {
+    if(version.released && type === "Dictionary"){ 
+      return (
+        <MenuItem onClick={handleCloseMenu}>
+          <CopyToClipboard
+            text={`${
+              version.released
+                ? `${BASE_URL}${url}${version.id}/`
+                : null
+            }`}
+          >
+              <Grid data-testid={"copy-subscription-url"}>
+              <FileCopyIcon fontSize={"small"} />
+              <span className={classes.addLeftPadding}>Copy Subscription URL</span>
+              </Grid>
+          </CopyToClipboard>
+        </MenuItem>
+      )
+    }
+  };
+
+  const releaseStatus = (row: Version) => {
+    if(showCreateVersionButton) {
+      return(
+        <Switch
+          data-testid={row.id}
+          checked={row.released}
+          onChange={() => openDialog(row)}
+          name='checkReleaseStatus'
+          color='primary'
+        />
+      )
+     }else{
+       return(
+        <Tooltip title="You don't have permission to change the status">
+          <Switch
+            data-testid={row.id}
+            checked={row.released}
+            name='checkReleaseStatus'
+            disableRipple={true}
+            color='primary'
+            style={{
+              cursor: "default",
+              opacity: 1,
+              backgroundColor: "transparent",
+            }}
+          />
+        </Tooltip>
+       )
+     }
+  }
+
+  const versionTable = () => {
+    if(versionsToDisplay.length > 0){
+      return(
+        <TableContainer className={classes.container}>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Date Created</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Release Status</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {versionsToDisplay.map((row: Version) => (
+                <TableRow key={row.id}>
+                  <TableCell>{row.id}</TableCell>
+                  <TableCell>{row.created_on ? moment(row.created_on).format("DD MMM YYYY") : ""}</TableCell>
+                  <TableCell style={{ wordBreak: "break-all" }}>
+                    {row.description || "None"}
+                  </TableCell>
+                  <TableCell>
+                    {releaseStatus(row)}
+                  </TableCell>
+                  <TableCell>
+                    <Tooltip title='More actions' enterDelay={700}>
+                      <IconButton
+                        data-testid={"more-actions"}
+                        aria-label='more'
+                        aria-controls='menu'
+                        aria-haspopup='true'
+                        onClick={(e) => handleClick(e, row)}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Menu
+                      id='long-menu'
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleCloseMenu}
+                    >
+                        <MenuItem onClick={handleCloseMenu} component={Link}
+                                  to={`${url}${version.id}/concepts/`}>
+                            <Grid data-testid={"view-concepts"}>
+                            <VisibilityIcon fontSize={"small"}/>
+                                <span className={classes.addLeftPadding}> View Concepts</span>
+                            </Grid>
+                        </MenuItem>
+                      {copySubscriptionUrl()}
+                    </Menu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )
+    }else{
+      return  <Typography align='center'>No versions created</Typography>
+    }
+  }
+
+  const createVersionButton = () => {
+    if(showCreateVersionButton){
+      return (
+          <ButtonGroup fullWidth variant='text' color='primary'>
+            <Button onClick={handleClickOpen}>Create new version</Button>
+          </ButtonGroup>
+        )
+      }
+  }
+
   return (
       <Paper className='fieldsetParent'>
         <fieldset style={{ minWidth: "0" }}>
           <Typography component='legend' variant='h5' gutterBottom>
             Versions
           </Typography>
-          {versionsToDisplay.length > 0 ? (
-              <TableContainer className={classes.container}>
-                <Table stickyHeader>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>ID</TableCell>
-                      <TableCell>Date Created</TableCell>
-                      <TableCell>Description</TableCell>
-                      <TableCell>Release Status</TableCell>
-                      <TableCell>Actions</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {versionsToDisplay.map((row: Version) => (
-                        <TableRow key={row.id}>
-                          <TableCell>{row.id}</TableCell>
-                          <TableCell>{row.created_on ? moment(row.created_on).format("DD MMM YYYY") : ""}</TableCell>
-                          <TableCell style={{ wordBreak: "break-all" }}>
-                            {row.description || "None"}
-                          </TableCell>
-                          <TableCell>
-                            {showCreateVersionButton ? (
-                                <Switch
-                                    data-testid={row.id}
-                                    checked={row.released}
-                                    onChange={() => openDialog(row)}
-                                    name='checkReleaseStatus'
-                                    color='primary'
-                                />
-                            ) : (
-                                <Tooltip title="You don't have permission to change the status">
-                          <Switch
-                            data-testid={row.id}
-                            checked={row.released}
-                            name='checkReleaseStatus'
-                            disableRipple={true}
-                            color='primary'
-                            style={{
-                              cursor: "default",
-                              opacity: 1,
-                              backgroundColor: "transparent",
-                            }}
-                          />
-                        </Tooltip>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Tooltip title='More actions' enterDelay={700}>
-                        <IconButton
-                          data-testid={"more-actions"}
-                          aria-label='more'
-                          aria-controls='menu'
-                          aria-haspopup='true'
-                          onClick={(e) => handleClick(e, row)}
-                        >
-                          <MoreVertIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Menu
-                        id='long-menu'
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleCloseMenu}
-                      >
-                          <MenuItem onClick={handleCloseMenu} component={Link}
-                                    to={`${url}${version.id}/concepts/`}>
-                              <Grid data-testid={"view-concepts"}>
-                              <VisibilityIcon fontSize={"small"}/>
-                                  <span className={classes.addLeftPadding}> View Concepts</span>
-                              </Grid>
-                          </MenuItem>
-                        {(!version.released && type === "Dictionary") ? null : (
-                          <MenuItem onClick={handleCloseMenu}>
-                            <CopyToClipboard
-                              text={`${
-                                version.released
-                                  ? `${BASE_URL}${url}${version.id}/`
-                                  : null
-                              }`}
-                            >
-                                <Grid data-testid={"copy-subscription-url"}>
-                                <FileCopyIcon fontSize={"small"} />
-                                <span className={classes.addLeftPadding}>Copy Subscription URL</span>
-                                </Grid>
-                            </CopyToClipboard>
-                          </MenuItem>
-                        )}
-                      </Menu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        ) : (
-          <Typography align='center'>No versions created</Typography>
-        )}
+          {versionTable()}
         <br />
-        {!showCreateVersionButton ? null : (
-          <ButtonGroup fullWidth variant='text' color='primary'>
-            <Button onClick={handleClickOpen}>Create new version</Button>
-          </ButtonGroup>
-        )}
+        {createVersionButton}
       </fieldset>
       <ConfirmationDialog
         open={confirmDialogOpen}

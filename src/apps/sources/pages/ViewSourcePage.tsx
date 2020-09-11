@@ -108,7 +108,7 @@ export const ViewSourcePage: React.FC<Props> = ({
   useEffect(() => {
     retrieveActiveConceptsSummary({conceptsUrl: `${url}concepts/`, limit: 1});
   }, [url, retrieveActiveConceptsSummary]);
-
+  
   const canEditSource = canModifyContainer(
       ownerType,
       owner,
