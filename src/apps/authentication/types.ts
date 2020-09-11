@@ -1,6 +1,6 @@
 export interface APIProfile {
   username: string;
-  name: string;
+  name?: string;
   url?: string;
   organizations_url?: string;
   email: string;
