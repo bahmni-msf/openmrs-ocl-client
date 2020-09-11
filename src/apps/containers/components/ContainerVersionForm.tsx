@@ -83,7 +83,6 @@ const ContainerVersionForm: React.FC<Props> = ({
                   id="id"
                   name="id"
                   label="ID"
-                  margin="normal"
                   component={TextField}
                 />
                 <FormControl
@@ -97,7 +96,6 @@ const ContainerVersionForm: React.FC<Props> = ({
                     id="released"
                     name="released"
                     label="Release?"
-                    margin="normal"
                     component={Select}
                   >
                     <MenuItem
@@ -121,7 +119,6 @@ const ContainerVersionForm: React.FC<Props> = ({
                   id="description"
                   name="description"
                   label="Description"
-                  margin="normal"
                   component={TextField}
                 />
                 <br />

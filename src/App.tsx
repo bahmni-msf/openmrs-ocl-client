@@ -15,9 +15,9 @@ import DictionaryRoutes, {
 } from "./apps/dictionaries";
 import ConceptRoutes, {
   DICTIONARY_CONTAINER,
-  DICTIONARY_VERSION_CONTAINER
+  DICTIONARY_VERSION_CONTAINER,
 } from "./apps/concepts";
-import { SOURCE_CONTAINER } from "./apps/concepts/constants";
+import { SOURCE_CONTAINER, SOURCE_VERSION_CONTAINER } from "./apps/concepts/constants";
 import {
   ViewOrgDictionariesPage,
   ViewPersonalDictionariesPage
@@ -79,6 +79,12 @@ const AuthenticatedRoutes: React.FC = () => {
       <Route path="/:ownerType/:owner/collections/:collection/concepts">
         <ConceptRoutes
           containerType={DICTIONARY_VERSION_CONTAINER}
+          viewConcepts={true}
+        />
+      </Route>
+      <Route path="/:ownerType/:owner/sources/:source/concepts">
+        <ConceptRoutes
+          containerType={SOURCE_VERSION_CONTAINER}
           viewConcepts={true}
         />
       </Route>

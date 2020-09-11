@@ -221,13 +221,13 @@ const ContainerReleasedVersions: React.FC<Props> = ({
                       open={Boolean(anchorEl)}
                       onClose={handleCloseMenu}
                     >
-                        <MenuItem onClick={handleCloseMenu} component={Link}
-                                  to={`${url}${version.id}/concepts/`}>
-                            <Grid data-testid={"view-concepts"}>
-                            <VisibilityIcon fontSize={"small"}/>
-                                <span className={classes.addLeftPadding}> View Concepts</span>
-                            </Grid>
-                        </MenuItem>
+                      <MenuItem onClick={handleCloseMenu} component={Link}
+                              to={`${url}${version.id}/concepts/`}>
+                        <Grid data-testid={"view-concepts"}>
+                        <VisibilityIcon fontSize={"small"}/>
+                          <span className={classes.addLeftPadding}> View Concepts</span>
+                        </Grid>
+                      </MenuItem>
                       {copySubscriptionUrl()}
                     </Menu>
                   </TableCell>
@@ -253,14 +253,14 @@ const ContainerReleasedVersions: React.FC<Props> = ({
   }
 
   return (
-      <Paper className='fieldsetParent'>
-        <fieldset style={{ minWidth: "0" }}>
-          <Typography component='legend' variant='h5' gutterBottom>
-            Versions
-          </Typography>
-          {versionTable()}
+    <Paper className='fieldsetParent'>
+      <fieldset style={{ minWidth: "0" }}>
+        <Typography component='legend' variant='h5' gutterBottom>
+          Versions
+        </Typography>
+        {versionTable()}
         <br />
-        {createVersionButton}
+        {createVersionButton()}
       </fieldset>
       <ConfirmationDialog
         open={confirmDialogOpen}
