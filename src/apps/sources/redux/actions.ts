@@ -40,6 +40,7 @@ export const retrieveSourceAndDetailsAction = (sourceUrl: string) => {
             makeRetrieveSourceAction(false)<APISource>(sourceUrl)
         );
         if (!retrieveSourceResult) return;
+        dispatch(retrieveSourceVersionsAction(sourceUrl));
     };
 };
 
