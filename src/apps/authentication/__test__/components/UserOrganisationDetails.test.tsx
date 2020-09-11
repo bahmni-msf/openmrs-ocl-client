@@ -20,3 +20,20 @@ describe("UserOrganisationDetails", () => {
         expect(container).toMatchSnapshot();
     });
 });
+
+describe("View User Organisations", () => {
+    it("should not show no user organisations message", () => {
+        const {queryByTestId} = renderUI(baseProps);
+
+        expect(queryByTestId("noUserOrgsMessage")).toBeNull();
+    });
+
+    it("should show no user organisations message", () => {
+        const {queryByTestId} = renderUI({
+            orgs:[]
+        });
+        const noUserOrgsMessage = queryByTestId('noUserOrgsMessage') || {textContent:null};
+        
+        expect(noUserOrgsMessage.textContent).toBe("You're not part of any Organisation")
+    });
+});

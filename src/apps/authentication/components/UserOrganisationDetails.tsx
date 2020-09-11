@@ -41,12 +41,20 @@ const UserOrganisationDetails: React.FC<Props> = ({
         return OrganisationsList;
     };
 
+    const getUserOrgsEmptyMessage = () => {
+        if (orgs && (orgs.length === 0)) {
+            return (<Typography data-testid="noUserOrgsMessage" align='center'>You're not part of any Organisation</Typography>)
+        }
+        return null;
+    };
+
     return (
         <Paper className='fieldsetParent'>
             <fieldset className={classes.container}>
                 <Typography component='legend' variant='h5' gutterBottom>
                     Your Organisations
                 </Typography>
+                {getUserOrgsEmptyMessage()}
                 <List className={classes.orgList}>
                     <ul>
                         {getUserOrganisationsList()}
