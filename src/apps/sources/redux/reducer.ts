@@ -5,7 +5,8 @@ import {CREATE_SOURCE_ACTION, EDIT_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIE
 import {LOGOUT_ACTION} from "../../authentication/redux/actionTypes";
 
 const initialState: SourceState = {
-    sources: []
+    sources: [],
+    versions: []
 };
 
 export const reducer = createReducer(initialState, {
