@@ -1,21 +1,12 @@
 import React from "react";
 import {render} from "../../../../test-utils";
 import {UserOrganisationDetails} from "../../components";
-import {APIOrg} from "../../types";
-
-const apiOrg: APIOrg[] = [
-    {
-        id: "test1", name: "Test Organisation", url: ""
-    },
-    {
-        id: "test2", name: "Another Organisation", url: ""
-    }
-];
+import {testAPIOrgList} from "../test_data";
 
 type userOrganisationDetailsProps = React.ComponentProps<typeof UserOrganisationDetails>;
 
 const baseProps: userOrganisationDetailsProps = {
-    orgs: apiOrg
+    orgs: testAPIOrgList
 };
 
 function renderUI(props: Partial<userOrganisationDetailsProps> = {}) {

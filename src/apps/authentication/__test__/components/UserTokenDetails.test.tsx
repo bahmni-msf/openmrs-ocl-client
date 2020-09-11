@@ -1,11 +1,12 @@
 import React from "react";
 import {render} from "../../../../test-utils";
 import {UserTokenDetails} from "../../components";
+import {testToken} from "../test_data";
 
 type userTokenDetailsProps = React.ComponentProps<typeof UserTokenDetails>;
 
 const baseProps: userTokenDetailsProps = {
-    token: "TestToken"
+    token: testToken
 };
 
 function renderUI(props: Partial<userTokenDetailsProps> = {}) {

@@ -3,23 +3,18 @@ import {Grid, Paper, Typography} from "@material-ui/core";
 import {connect} from "react-redux";
 import {APIOrg, APIProfile, getUserDetailsAction, profileSelector} from "../../authentication";
 import {AppState} from "../../../redux";
-import {ProgressOverlay} from "../../../utils/components";
 import Header from "../../../components/Header";
 import {orgsSelector} from "../redux/reducer";
-import {UserForm, UserTokenDetails, UserOrganisationDetails} from "../components";
+import {UserForm, UserOrganisationDetails, UserTokenDetails} from "../components";
 
 
 interface Props {
-    loading: boolean;
-    errors?: any;
     userProfile?: APIProfile;
     userOrganisations?: APIOrg[];
     userToken?: string;
 }
 
 export const ViewUserProfilePage: React.FC<Props> = ({
-                                                         loading,
-                                                         errors,
                                                          userProfile,
                                                          userOrganisations,
                                                          userToken
@@ -29,53 +24,41 @@ export const ViewUserProfilePage: React.FC<Props> = ({
             title="Your Profile"
             justifyChildren='space-around'
         >
-            <ProgressOverlay
-                delayRender
-                loading={loading}
-                error={
-                    errors
-                        ? "Could not load user details. Refresh the page to retry"
-                        : undefined
-                }
-            >
-                <Grid id='viewUserProfilePage' item xs={5} component='div'>
-                    <Paper className='fieldsetParent'>
-                        <fieldset>
-                            <Typography component='legend' variant='h5' gutterBottom>
-                                Details
-                            </Typography>
-                            <UserForm
-                                savedValues={userProfile}
-                                loading={true}
-                            />
-                        </fieldset>
-                    </Paper>
-                </Grid>
-                <Grid item xs={5} container spacing={2}>
-                    <Grid item xs={12} component='div'>
-                        <UserTokenDetails
-                            token={userToken}
+            <Grid id='viewUserProfilePage' item xs={5} component='div'>
+                <Paper className='fieldsetParent'>
+                    <fieldset>
+                        <Typography component='legend' variant='h5' gutterBottom>
+                            Details
+                        </Typography>
+                        <UserForm
+                            savedValues={userProfile}
+                            loading={true}
                         />
-                    </Grid>
-                    <Grid item xs={12} component='div'>
-                        <UserOrganisationDetails
-                            orgs={userOrganisations}
-                        />
-                    </Grid>
+                    </fieldset>
+                </Paper>
+            </Grid>
+            <Grid item xs={5} container spacing={2}>
+                <Grid item xs={12} component='div'>
+                    <UserTokenDetails
+                        token={userToken}
+                    />
                 </Grid>
-            </ProgressOverlay>
+                <Grid item xs={12} component='div'>
+                    <UserOrganisationDetails
+                        orgs={userOrganisations}
+                    />
+                </Grid>
+            </Grid>
         </Header>
     );
 };
 
-const mapStateToProps = (state: AppState) => ({
-    loading: false,
-    errors: undefined,
+export const mapStateToProps = (state: AppState) => ({
     userProfile: profileSelector(state),
     userOrganisations: orgsSelector(state),
     userToken: state.auth.token
 });
-const mapDispatchToProps = {
+export const mapDispatchToProps = {
     retrieveUserDetails: getUserDetailsAction
 };
 
