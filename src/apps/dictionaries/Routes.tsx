@@ -4,11 +4,11 @@ import Header from "../../components/Header";
 import {
   EditDictionaryPage,
   ViewDictionaryPage,
-  ViewPersonalDictionariesPage
+  ViewPersonalDictionariesPage,
 } from "./pages";
-import { DICTIONARY_VERSION_CONTAINER } from "../concepts";
+// import { DICTIONARY_VERSION_CONTAINER } from "../concepts";
 import AddBulkConceptsPage from "./pages/AddBulkConceptsPage";
-import ConceptRoutes from "../concepts/Routes";
+// import ConceptRoutes from "../concepts/Routes";
 
 interface Props {
   viewDictionaries?: boolean;
@@ -21,7 +21,7 @@ const Routes: React.FC<Props> = ({
   viewDictionaries = true,
   viewDictionary = true,
   editDictionary = true,
-  concepts = true
+  concepts = true,
 }) => {
   // @ts-ignore
   let { path } = useRouteMatch();
@@ -36,7 +36,7 @@ const Routes: React.FC<Props> = ({
       )}
       {!viewDictionary ? null : (
         <Route exact path={`${path}/:collection/`}>
-          <Header title="Details" justifyChildren="space-around">
+          <Header title='Details' justifyChildren='space-around'>
             <ViewDictionaryPage />
           </Header>
         </Route>
@@ -48,12 +48,12 @@ const Routes: React.FC<Props> = ({
       )}
       {!concepts ? null : (
         <>
-          <Route path={`${path}/:collection/:version/concepts/`}>
+          {/* <Route path={`${path}/:collection/:version/concepts/`}>
             <ConceptRoutes
               containerType={DICTIONARY_VERSION_CONTAINER}
               viewConcepts={true}
             />
-          </Route>
+          </Route> */}
           <Route exact path={`${path}/:collection/add/`}>
             <AddBulkConceptsPage />
           </Route>
