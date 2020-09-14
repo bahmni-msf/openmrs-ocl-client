@@ -3,22 +3,23 @@ import {Paper, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {APIOrg} from "../types";
 import List from "@material-ui/core/List";
+import * as _ from "lodash";
 
 interface Props {
     orgs?: APIOrg[];
 }
 
 const useStyles = makeStyles({
-    token: {
-        wordBreak: "break-all",
-        color: "black"
-    },
     container: {
         minWidth: "0"
     },
     orgList: {
-        maxHeight: 400,
-        overflow: "scroll"
+        maxHeight: 280,
+        overflow: "scroll",
+        color: "black"
+    },
+    orgItem: {
+        paddingBottom: "12px"
     }
 });
 
@@ -30,9 +31,9 @@ const UserOrganisationDetails: React.FC<Props> = ({
     const getUserOrganisationsList = () => {
         const OrganisationsList: Array<JSX.Element> = [];
         if (orgs) {
-            orgs.map(org => (
+            _.sortBy(orgs, (org) => org.name).map(org => (
                 OrganisationsList.push(
-                    <li key={org.id}>
+                    <li key={org.id} className={classes.orgItem}>
                         {org.name}
                     </li>
                 )

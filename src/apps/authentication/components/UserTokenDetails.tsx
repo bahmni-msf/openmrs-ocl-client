@@ -10,7 +10,8 @@ interface Props {
 const useStyles = makeStyles({
     token: {
         wordBreak: "break-all",
-        color: "black"
+        color: "black",
+        textAlign: "center"
     },
     container: {
         minWidth: "0"
@@ -26,10 +27,7 @@ const UserTokenDetails: React.FC<Props> = ({
         <Paper className='fieldsetParent'>
             <fieldset className={classes.container}>
                 <Typography component='legend' variant='h5' gutterBottom>
-                    API Token Details
-                </Typography>
-                <Typography variant='subtitle1' gutterBottom>
-                    <b>API Token: </b>
+                    API Token
                 </Typography>
                 <Typography gutterBottom className={classes.token}>
                     {token}
