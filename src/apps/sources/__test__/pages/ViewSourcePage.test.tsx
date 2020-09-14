@@ -51,7 +51,13 @@ const baseProps: viewSourcePageProps = {
     retrieveSourceAndDetails: jest.fn(),
     retrieveConceptsSummary: jest.fn(),
     retrieveActiveConceptsSummary: jest.fn(),
-    retrieveSourceErrors: false
+    retrieveSourceErrors: false,
+    createSourceVersion: jest.fn(),
+    retrieveSourceVersions: jest.fn(),
+    editSourceVersion: jest.fn(),
+    versions: [],
+    versionsLoading: false,
+    createVersionLoading: true
 };
 
 function renderUI(props: Partial<viewSourcePageProps> = {}) {
