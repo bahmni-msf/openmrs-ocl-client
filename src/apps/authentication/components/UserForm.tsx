@@ -5,11 +5,7 @@ import {
 import { Field, Form, Formik} from "formik";
 import { TextField } from "formik-material-ui";
 import { APIProfile } from "../types";
-import {
-    MuiPickersUtilsProvider,
-    DatePicker
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import moment from 'moment';
 
 interface Props {
     loading: boolean;
@@ -112,19 +108,17 @@ const UserForm: React.FC<Props> = ({
                             rowsMax={4}
                             component={TextField}
                         />
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <DatePicker
-                                fullWidth
-                                id="created_on"
-                                name="created_on"
-                                label="Joined Date"
-                                margin="normal"
-                                format="dd MMM yyyy"
-                                value={values.created_on}
-                                disabled
-                                onChange={() => {}}  // No action required as Joined date can't be edited
-                            />
-                        </MuiPickersUtilsProvider>
+                        <Field
+                            fullWidth
+                            autoComplete="off"
+                            id="joinedDate"
+                            name="joinedDate"
+                            defaultValue={values.created_on ? moment(values.created_on).format("DD MMM YYYY") : ""}
+                            label="Joined Date"
+                            margin="normal"
+                            disabled
+                            component={TextField}
+                        />
                     </Form>
                 )}
             </Formik>
