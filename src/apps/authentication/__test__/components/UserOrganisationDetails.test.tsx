@@ -22,13 +22,13 @@ describe("UserOrganisationDetails", () => {
 });
 
 describe("View User Organisations", () => {
-    it("should not show no user organisations message", () => {
+    it("should not show no user organisations message when user is part of at least one organisation", () => {
         const {queryByTestId} = renderUI(baseProps);
 
         expect(queryByTestId("noUserOrgsMessage")).toBeNull();
     });
 
-    it("should show no user organisations message", () => {
+    it("should show no user organisations message when user is not part of at least one organisation", () => {
         const {queryByTestId} = renderUI({
             orgs:[]
         });
