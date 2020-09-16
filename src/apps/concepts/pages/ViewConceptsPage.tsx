@@ -179,7 +179,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   useEffect(() => {
     // we don't make this reactive(only depend on the initial values), because the requirement
     // was only trigger queries on user search(enter or apply filters, or change page)
-    containerType === SOURCE_CONTAINER
+    (containerType === SOURCE_CONTAINER || containerType === SOURCE_VERSION_CONTAINER)
       ? retrieveSource(containerUrl)
       : retrieveDictionary(containerUrl);
 

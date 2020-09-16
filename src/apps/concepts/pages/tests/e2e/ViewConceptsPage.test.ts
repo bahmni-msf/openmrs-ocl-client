@@ -207,11 +207,13 @@ describe("View Concepts Page", () => {
       cy.findByText(TEXT.IMPORT_EXISTING_CONCEPT).click();
       cy.findByText(TEXT.PICK_CONCEPTS).click();
 
-      cy.runAndAwait(() =>
-        cy
-          .findByPlaceholderText("Search concepts")
-          .type("984 Immunizations{enter}")
-      );
+      cy.runAndAwait(
+        () => {          cy.findByPlaceholderText("Search concepts").type(
+            "984 Immunizations{enter}"          );
+        },
+        "GET",
+        true
+       );
       cy.runAndAwait(() =>
         cy.findAllByTitle("More actions")
           .first()

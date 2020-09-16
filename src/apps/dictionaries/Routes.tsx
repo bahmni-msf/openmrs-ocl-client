@@ -6,9 +6,7 @@ import {
   ViewDictionaryPage,
   ViewPersonalDictionariesPage,
 } from "./pages";
-// import { DICTIONARY_VERSION_CONTAINER } from "../concepts";
 import AddBulkConceptsPage from "./pages/AddBulkConceptsPage";
-// import ConceptRoutes from "../concepts/Routes";
 
 interface Props {
   viewDictionaries?: boolean;
@@ -48,12 +46,6 @@ const Routes: React.FC<Props> = ({
       )}
       {!concepts ? null : (
         <>
-          {/* <Route path={`${path}/:collection/:version/concepts/`}>
-            <ConceptRoutes
-              containerType={DICTIONARY_VERSION_CONTAINER}
-              viewConcepts={true}
-            />
-          </Route> */}
           <Route exact path={`${path}/:collection/add/`}>
             <AddBulkConceptsPage />
           </Route>
