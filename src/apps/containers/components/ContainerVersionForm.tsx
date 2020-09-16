@@ -25,7 +25,7 @@ interface Props {
   handleClose: () => void;
 }
 
-const DictionaryVersionSchema = Yup.object().shape<Version>({
+const ContainerVersionSchema = Yup.object().shape<Version>({
   id: Yup.string().required("Version ID is required"),
   released: Yup.boolean().required(
     "Choose whether you would like to release this version"
@@ -67,7 +67,7 @@ const ContainerVersionForm: React.FC<Props> = ({
       <Formik
         ref={formikRef}
         initialValues={initialValues}
-        validationSchema={DictionaryVersionSchema}
+        validationSchema={ContainerVersionSchema}
         validateOnChange={false}
         onSubmit={(values: Version) => {
           if (onSubmit) onSubmit(values);
