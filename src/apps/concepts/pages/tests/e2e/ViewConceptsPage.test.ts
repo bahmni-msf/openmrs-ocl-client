@@ -208,17 +208,19 @@ describe("View Concepts Page", () => {
       cy.findByText(TEXT.PICK_CONCEPTS).click();
 
       cy.runAndAwait(
-        () => {          cy.findByPlaceholderText("Search concepts").type(
-            "984 Immunizations{enter}"          );
+        () => {
+          cy.findByPlaceholderText("Search concepts").type(
+            "984 Immunizations{enter}"
+          );
         },
         "GET",
         true
-       );
-      cy.runAndAwait(() =>
-        cy.findAllByTitle("More actions")
-          .first()
-          .click()
       );
+
+      cy.findAllByTitle("More actions")
+        .first()
+        .click();
+
       cy.runAndAwait(
         () => {
           cy.findByText(TEXT.ADD_TO_DICTIONARY).click();
