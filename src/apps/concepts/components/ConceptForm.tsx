@@ -29,11 +29,10 @@ import {
   MAP_TYPE_Q_AND_A,
   NAME_TYPES,
   CONCEPT_CLASS_QUESTION,
-  CONCEPT_CLASSES_SET,
   CONCEPT_DATATYPE_NUMERIC,
   LOCALES,
   CONTEXT,
-  findLocale
+  findLocale, CONCEPT_DATATYPE_CODED
 } from "../../../utils";
 import NameOrDescriptionTable from "./NamesTable";
 import { EditOutlined as EditIcon } from "@material-ui/icons";
@@ -215,15 +214,14 @@ const ConceptForm: React.FC<Props> = ({
 }) => {
   const allowEditing = context === CONTEXT.edit || context === CONTEXT.create;
   const allowIdEdits = context === CONTEXT.create;
-  const showAnswers =
+  let showAnswers =
     (context === CONTEXT.edit && supportLegacyMappings) ||
     (context === CONTEXT.create &&
       (!conceptClass || conceptClass === CONCEPT_CLASS_QUESTION)) ||
     (context === CONTEXT.view && supportLegacyMappings);
-  const showSets =
+  let showSets =
     (context === CONTEXT.edit && supportLegacyMappings) ||
-    (context === CONTEXT.create &&
-      (!conceptClass || CONCEPT_CLASSES_SET.includes(conceptClass))) ||
+    (context === CONTEXT.create ) ||
     (context === CONTEXT.view && supportLegacyMappings);
 
   const classes = useStyles();
@@ -236,6 +234,10 @@ const ConceptForm: React.FC<Props> = ({
   const toggleExternalIDEditable = () =>
     setExternalIDEditable(!isExternalIDEditable);
 
+  const codedFormMembers = (dataType : string | undefined) => {
+    showAnswers = dataType === CONCEPT_DATATYPE_CODED ? true : false ;
+    showSets = dataType === CONCEPT_DATATYPE_CODED ? false : true ;
+  };
 
   useEffect(() => {
     const { current: currentRef } = formikRef;
@@ -304,6 +306,8 @@ const ConceptForm: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allMappingErrors.toString()]);
 
+
+  // @ts-ignore
   return (
     <Formik
       ref={formikRef}
@@ -385,6 +389,7 @@ const ConceptForm: React.FC<Props> = ({
                   <ErrorMessage name="datatype" component="span" />
                 </Typography>
               </FormControl>
+              {codedFormMembers(values.datatype)}
               {values.datatype !== CONCEPT_DATATYPE_NUMERIC ? null : (
                 <PrecisionOptions />
               )}
