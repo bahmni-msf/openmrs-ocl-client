@@ -58,14 +58,18 @@ const useStyles = makeStyles({
 });
 
 const prepForApi = (values: Concept) => {
-  const { names, extras } = values;
+  const { names, extras, datatype, answers } = values;
   return {
     ...values,
     names: names.map((name: ConceptName) => ({
       ...name,
       name_type: name.name_type === "null" ? null : name.name_type // api represents 'Synonym' name_type as null
     })),
-    extras: values.datatype === CONCEPT_DATATYPE_NUMERIC ? extras : {}
+    extras: values.datatype === CONCEPT_DATATYPE_NUMERIC ? extras : {},
+    answers: answers.map((answer) => ({
+      ...answer,
+      retired: datatype !== CONCEPT_DATATYPE_CODED ? true : answer.retired
+    }))
   };
 };
 

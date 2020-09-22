@@ -1,8 +1,6 @@
-// import { render } from '@testing-library/react';
 import React from 'react';
 import { render } from '../../../../test-utils';
 import { ConceptForm } from '../../components';
-// import {BrowserRouter as Router} from "react-router-dom";
 
 type sourcesFormProps = React.ComponentProps<typeof ConceptForm>;
 let savedValues: any;
