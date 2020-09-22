@@ -52,6 +52,9 @@ const MAPPINGS_VALUE_KEY = "mappings";
 const useStyles = makeStyles({
   buttonContainer: {
     textAlign: "center"
+  },
+  container: {
+    minWidth: "0"
   }
 });
 
@@ -389,7 +392,7 @@ const ConceptForm: React.FC<Props> = ({
           </Paper>
           <br />
           <Paper className="fieldsetParent">
-            <fieldset>
+            <fieldset className={classes.container}>
               <Typography component="legend" variant="h5" gutterBottom>
                 Names
               </Typography>
@@ -422,7 +425,7 @@ const ConceptForm: React.FC<Props> = ({
           </Paper>
           <br />
           <Paper className="fieldsetParent">
-            <fieldset>
+            <fieldset className={classes.container}>
               <Typography component="legend" variant="h5" gutterBottom>
                 Descriptions
               </Typography>
@@ -455,7 +458,7 @@ const ConceptForm: React.FC<Props> = ({
           {!showAnswers ? null : (
             <>
               <Paper className="fieldsetParent">
-                <fieldset>
+                <fieldset className={classes.container}>
                   <Typography component="legend" variant="h5" gutterBottom>
                     Answers
                   </Typography>
@@ -485,7 +488,7 @@ const ConceptForm: React.FC<Props> = ({
           {!showSets ? null : (
             <>
               <Paper className="fieldsetParent">
-                <fieldset>
+                <fieldset className={classes.container}>
                   <Typography component="legend" variant="h5" gutterBottom>
                     Set Members
                   </Typography>
@@ -501,7 +504,7 @@ const ConceptForm: React.FC<Props> = ({
                         arrayHelpers={arrayHelpers}
                         isSubmitting={isSubmitting}
                         handleChange={handleChange}
-                        title="Set Members"
+                        title="Set Member"
                         fixedMappingType={MAP_TYPE_CONCEPT_SET}
                         editing={allowEditing}
                       />
@@ -513,7 +516,7 @@ const ConceptForm: React.FC<Props> = ({
             </>
           )}
           <Paper className="fieldsetParent">
-            <fieldset>
+            <fieldset className={classes.container}>
               <Typography component="legend" variant="h5" gutterBottom>
                 Mappings
               </Typography>
