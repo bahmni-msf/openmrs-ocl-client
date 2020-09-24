@@ -369,7 +369,7 @@ const ConceptForm: React.FC<Props> = ({
                   name="concept_class"
                   id="concept_class"
                   component={Select}
-                  disabled={(allowEditing && allowIdEdits)}
+                  disabled={conceptClass && (allowEditing && allowIdEdits)}
                 >
                   {CONCEPT_CLASSES.map(conceptClass => (
                     <MenuItem key={conceptClass} value={conceptClass}>
