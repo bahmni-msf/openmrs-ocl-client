@@ -240,8 +240,6 @@ const ConceptForm: React.FC<Props> = ({
 
   const codedFormMembers = (dataType : string | undefined) => {
     showAnswers = dataType === CONCEPT_DATATYPE_CODED ? true : false ;
-    // Keeping the commented code for now, until we have clarity from OCL squad.
-    //showSets = dataType === CONCEPT_DATATYPE_CODED ? false : true ;
   };
 
   useEffect(() => {
@@ -311,8 +309,6 @@ const ConceptForm: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allMappingErrors.toString()]);
 
-
-  // @ts-ignore
   return (
     <Formik
       ref={formikRef}
