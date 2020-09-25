@@ -1,15 +1,31 @@
 import React from 'react';
+import uuid from 'uuid';
 import { render } from '../../../../test-utils';
 import { ConceptForm } from '../../components';
+import { Concept } from '../../types';
 
-type sourcesFormProps = React.ComponentProps<typeof ConceptForm>;
-let savedValues: any;
-const baseProps: sourcesFormProps = {
+type conceptFormProps = React.ComponentProps<typeof ConceptForm>;
+
+const initialValues: Concept = {
+    concept_class: "",
+    datatype: "Coded",
+    descriptions: [],
+    external_id: uuid(),
+    id: "",
+    answers: [],
+    sets: [],
+    mappings: [],
+    names: [],
+    retired: false,
+    extras: {}
+  };;
+
+const baseProps: conceptFormProps = {
     onSubmit: () => {},
     loading: true,
     status: "",
     errors: {},
-    savedValues: savedValues,
+    savedValues: initialValues,
     context: "view",
     allMappingErrors: [],
     conceptClass: "Diagnosis",
@@ -18,15 +34,25 @@ const baseProps: sourcesFormProps = {
     supportedLocales:[]
 };
 
-function renderUI(props: Partial<sourcesFormProps> = {}) {
+function renderUI(props: Partial<conceptFormProps> = {}) {
     return render(
         <ConceptForm {...baseProps} {...props} />
     );
 };
 
 describe('ConceptForm ', () => {
-   it('snapshot test', () => {
-       const {container} = renderUI();
-       expect(container).toMatchSnapshot();
+    
+    let queryByTestId: Function;
+    beforeEach(() => {
+        const queries = renderUI(baseProps);
+        queryByTestId = queries.queryByTestId;
+    });
+
+   it('should show set members sections', () => {
+        expect(queryByTestId('set-members')).not.toBeNull();
+   });
+
+   it('should show answers sections if datatype is coded', () => {
+        expect(queryByTestId('answers')).not.toBeNull();
    });
 });

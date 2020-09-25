@@ -463,7 +463,7 @@ const ConceptForm: React.FC<Props> = ({
           <br />
           {!showAnswers ? null : (
             <>
-              <Paper className="fieldsetParent">
+              <Paper className="fieldsetParent" data-testid="answers">
                 <fieldset className={classes.container}>
                   <Typography component="legend" variant="h5" gutterBottom>
                     Answers
@@ -493,7 +493,7 @@ const ConceptForm: React.FC<Props> = ({
           )}
           {!showSets ? null : (
             <>
-              <Paper className="fieldsetParent">
+              <Paper className="fieldsetParent" data-testid="set-members">
                 <fieldset className={classes.container}>
                   <Typography component="legend" variant="h5" gutterBottom>
                     Set Members
