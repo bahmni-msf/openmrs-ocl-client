@@ -1,7 +1,8 @@
 import React from "react";
-import {Card, CardContent, ListItem, makeStyles, Tooltip, Typography} from "@material-ui/core";
+import {Card, CardActions, CardContent, Chip, ListItem, makeStyles, Tooltip, Typography} from "@material-ui/core";
 import {getLocalStorageObject} from "../redux/localStorageUtils";
 import moment from "moment";
+import {ImportMetaData} from "../apps/dictionaries";
 
 interface Props {
     headerMessage: string,
@@ -13,8 +14,14 @@ const useStyles = makeStyles({
     card: {
         width: "100%"
     },
-    scrollLongText: {
-        overflowX: "scroll"
+    chip: {
+        maxWidth: 200,
+    },
+    cardFooter: {
+        paddingLeft: 8,
+    },
+    cardContent: {
+        paddingBottom: 2
     }
 });
 
@@ -25,40 +32,62 @@ const NotificationCard: React.FC<Props> = ({
                                            }) => {
     const classes = useStyles();
 
-    const importDateTimeList: string[] = []
+    const importMetaDataItemsList: ImportMetaData[] = []
 
-    const importDateTimeItems = getLocalStorageObject({
+    const importMetaDataItems = getLocalStorageObject({
         name: "notification",
-        key: "importDateTimeList",
-        value: importDateTimeList,
-    }).reverse() as string[];
+        key: "importMetaDataList",
+        value: importMetaDataItemsList,
+    }).reverse() as ImportMetaData[];
 
     const showImportDateTime = (index: number) => {
         return (
-            <Typography variant='subtitle2' color='textSecondary'>
-                <Tooltip title={moment(importDateTimeItems[index]).format("DD MMM YYYY HH:mm")} enterDelay={700}>
-                    <span>{moment(importDateTimeItems[index]).fromNow()}</span>
+            <Typography variant='subtitle2' color='textSecondary' className={classes.cardFooter}>
+                <Tooltip title={moment(importMetaDataItems[index].dateTime).format("DD MMM YYYY HH:mm")} enterDelay={700}>
+                    <span>{moment(importMetaDataItems[index].dateTime).fromNow()}</span>
                 </Tooltip>
             </Typography>
+        );
+    };
+
+    const dictionaryNameFromUrl = (url: string): string => {
+        let words = url.split("/");
+        console.log(words);
+        return words[words.length - 2];
+    };
+
+    const showDictionaryName = (index: number) => {
+        return (
+            <Tooltip title={"Redirect to Dictionary"}>
+            <Chip
+                color='primary'
+                size='small'
+                className={classes.chip}
+                label={dictionaryNameFromUrl(importMetaDataItems[index].dictionary)}
+                component='a'
+                href={importMetaDataItems[index].dictionary}
+                clickable
+            />
+            </Tooltip>
         );
     };
 
     return (
         <ListItem key={index}>
             <Card className={classes.card}>
-                <CardContent>
+                <CardContent className={classes.cardContent}>
+                    {showDictionaryName(index)}
                     <Typography
                         noWrap
                         variant="subtitle1"
-                        className={classes.scrollLongText}
                     >
                         {headerMessage}
                     </Typography>
                     <Typography variant="subtitle2" color="textSecondary">
                         {subHeaderMessage}
                     </Typography>
-                    {showImportDateTime(index)}
                 </CardContent>
+                <CardActions>{showImportDateTime(index)}</CardActions>
             </Card>
         </ListItem>
     )

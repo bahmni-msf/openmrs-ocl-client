@@ -1,10 +1,13 @@
 import React from "react";
 import {
+  Chip,
   Grid,
   List,
-  ListSubheader,
   Typography
 } from "@material-ui/core";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import ErrorIcon from '@material-ui/icons/Error';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { AppState } from "../redux";
 import {
   addConceptsToDictionaryErrorListSelector,
@@ -81,12 +84,15 @@ const ActionsInProgressPage: React.FC<Props> = ({
           </Typography>
         )}
         {!inProgressItems.length ? null : (
-          <List
-            component="div"
-            subheader={
-              <ListSubheader component="div">In progress</ListSubheader>
-            }
-          >
+            <List
+                subheader={
+                  <Chip
+                      label='In Progress'
+                      icon={<AutorenewIcon />}
+                      color='secondary'
+                  />
+                }
+            >
             {inProgressItems.map((item, index) => (
                 <NotificationCard
                     headerMessage={item.split(SEPARATOR)[0]}
@@ -97,10 +103,15 @@ const ActionsInProgressPage: React.FC<Props> = ({
           </List>
         )}
         {!erroredItems.length ? null : (
-          <List
-            component="div"
-            subheader={<ListSubheader component="div">Failed</ListSubheader>}
-          >
+            <List
+                  subheader={
+                    <Chip
+                        label='Failed'
+                        icon={<ErrorIcon />}
+                        color='secondary'
+                    />
+                  }
+            >
             {erroredItems.map((item, index) => (
                 <NotificationCard
                     headerMessage={item.progress.split(SEPARATOR)[0]}
@@ -111,10 +122,15 @@ const ActionsInProgressPage: React.FC<Props> = ({
           </List>
         )}
         {!successfullItems.length ? null : (
-          <List
-            component="div"
-            subheader={<ListSubheader component="div">Completed</ListSubheader>}
-          >
+            <List
+                subheader={
+                  <Chip
+                      label='Completed'
+                      icon={<CheckCircleIcon />}
+                      color='secondary'
+                  />
+                }
+            >
             {successfullItems.map((item, index) => (
                 <NotificationCard
                     headerMessage={item.progress.split(SEPARATOR)[0]}
