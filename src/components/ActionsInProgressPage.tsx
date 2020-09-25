@@ -1,12 +1,8 @@
 import React from "react";
 import {
-  Card,
-  CardContent,
   Grid,
   List,
-  ListItem,
   ListSubheader,
-  makeStyles,
   Typography
 } from "@material-ui/core";
 import { AppState } from "../redux";
@@ -19,6 +15,7 @@ import {
 import { connect } from "react-redux";
 import Header from "./Header";
 import { getLocalStorageObject } from "../redux/localStorageUtils";
+import NotificationCard from "./NotificationCard";
 
 interface Props {
   loadingList?: (boolean | undefined)[];
@@ -27,14 +24,6 @@ interface Props {
   successList?: ({ payload: {} } | undefined)[];
 }
 const SEPARATOR = "--";
-const useStyles = makeStyles({
-  card: {
-    width: "100%"
-  },
-  scrollLongText: {
-    overflowX: "scroll"
-  }
-});
 
 const ActionsInProgressPage: React.FC<Props> = ({
   loadingList = [],
@@ -81,8 +70,6 @@ const ActionsInProgressPage: React.FC<Props> = ({
     .filter((item: any) => item && item.progress)
     .reverse() as { error: string; progress: string }[];
 
-  const classes = useStyles();
-
   return (
     <Header title="Progress Notifications">
       <Grid item xs={6}>
@@ -100,24 +87,12 @@ const ActionsInProgressPage: React.FC<Props> = ({
               <ListSubheader component="div">In progress</ListSubheader>
             }
           >
-            {inProgressItems.map(item => (
-
-              <ListItem key={item}>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <Typography
-                      noWrap
-                      variant="subtitle1"
-                      className={classes.scrollLongText}
-                    >
-                      {item.split(SEPARATOR)[0]}
-                    </Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
-                      {item.split(SEPARATOR)[1] || ""}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </ListItem>
+            {inProgressItems.map((item, index) => (
+                <NotificationCard
+                    headerMessage={item.split(SEPARATOR)[0]}
+                    subHeaderMessage={item.split(SEPARATOR)[1] || ""}
+                    index={index}
+                />
             ))}
           </List>
         )}
@@ -126,23 +101,12 @@ const ActionsInProgressPage: React.FC<Props> = ({
             component="div"
             subheader={<ListSubheader component="div">Failed</ListSubheader>}
           >
-            {erroredItems.map(item => (
-              <ListItem key={item.progress}>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <Typography
-                      noWrap
-                      variant="subtitle1"
-                      className={classes.scrollLongText}
-                    >
-                      {item.progress.split(SEPARATOR)[0]}
-                    </Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
-                      {item.error}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </ListItem>
+            {erroredItems.map((item, index) => (
+                <NotificationCard
+                    headerMessage={item.progress.split(SEPARATOR)[0]}
+                    subHeaderMessage={item.error}
+                    index={index}
+                />
             ))}
           </List>
         )}
@@ -151,23 +115,12 @@ const ActionsInProgressPage: React.FC<Props> = ({
             component="div"
             subheader={<ListSubheader component="div">Completed</ListSubheader>}
           >
-            {successfullItems.map(item => (
-              <ListItem key={item.progress}>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <Typography
-                      noWrap
-                      variant="subtitle1"
-                      className={classes.scrollLongText}
-                    >
-                      {item.progress.split(SEPARATOR)[0]}
-                    </Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
-                      {buildAddConceptToDictionaryMessage(item.result)}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </ListItem>
+            {successfullItems.map((item, index) => (
+                <NotificationCard
+                    headerMessage={item.progress.split(SEPARATOR)[0]}
+                    subHeaderMessage={buildAddConceptToDictionaryMessage(item.result)}
+                    index={index}
+                />
             ))}
           </List>
         )}

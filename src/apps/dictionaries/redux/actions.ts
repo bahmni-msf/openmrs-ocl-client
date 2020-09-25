@@ -46,8 +46,7 @@ import {
   createLocalStorageObject,
   updateLocalStorageArray
 } from "../../../redux/localStorageUtils";
-
-
+import moment from "moment";
 
 const createDictionaryAction = createActionThunk(
   CREATE_DICTIONARY_ACTION,
@@ -360,7 +359,7 @@ export const recursivelyAddConceptsToDictionaryAction = (
     addToLocalStorageObject('notification','loadingList', true);
     addToLocalStorageObject('notification','erroredList', null);
     addToLocalStorageObject('notification','successList', "");
-
+    addToLocalStorageObject("notification", "importDateTimeList", moment().toString());
 
     updateProgress(
         referencesToAdd.length

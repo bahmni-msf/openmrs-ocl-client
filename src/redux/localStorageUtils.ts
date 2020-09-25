@@ -8,6 +8,7 @@ export function createLocalStorageObject(name: string){
             setLocalStorageObject('notification', 'successList', []);
             setLocalStorageObject('notification', 'index', -1);
             setLocalStorageObject('notification', 'indexList', []);
+            setLocalStorageObject('notification', 'importDateTimeList', []);
         }
     }catch (error) {
         console.log(error);
