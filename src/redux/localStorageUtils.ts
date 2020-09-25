@@ -1,3 +1,5 @@
+import {ImportMetaData} from "../apps/dictionaries";
+
 export function createLocalStorageObject(name: string){
     try {
         const existing = localStorage.getItem(name);
@@ -8,6 +10,7 @@ export function createLocalStorageObject(name: string){
             setLocalStorageObject('notification', 'successList', []);
             setLocalStorageObject('notification', 'index', -1);
             setLocalStorageObject('notification', 'indexList', []);
+            setLocalStorageObject('notification', 'importMetaDataList', []);
         }
     }catch (error) {
         console.log(error);
@@ -21,7 +24,7 @@ function setLocalStorageObject(name: string, key: string, value: any) {
     localStorage.setItem(name, JSON.stringify(existingObject));
 };
 
-export function addToLocalStorageObject(name: string, key: string, value: string | boolean | null) {
+export function addToLocalStorageObject(name: string, key: string, value: string | boolean | null | ImportMetaData) {
     try {
         const existing = localStorage.getItem(name);
         let existingObject = existing ? JSON.parse(existing) : {};

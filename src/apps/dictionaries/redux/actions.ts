@@ -7,7 +7,7 @@ import {
   startAction
 } from "../../../redux";
 import api from "../api";
-import { APIDictionary, Dictionary, NewAPIDictionary } from "../types";
+import { APIDictionary, Dictionary, NewAPIDictionary, ImportMetaData } from "../types";
 import {
   APISource,
   createSourceAction as createSource,
@@ -46,8 +46,7 @@ import {
   createLocalStorageObject,
   updateLocalStorageArray
 } from "../../../redux/localStorageUtils";
-
-
+import moment from "moment";
 
 const createDictionaryAction = createActionThunk(
   CREATE_DICTIONARY_ACTION,
@@ -331,14 +330,12 @@ export const recursivelyAddConceptsToDictionaryAction = (
     const thisOrThese = concepts.length > 1 ? "these" : "this";
     const actionIndex =
         addConceptsToDictionaryProgressListSelector(getState())?.length || 0;
-    const splitDictionaryUrl = dictionaryUrl.split('/');
-    const dictionaryName = splitDictionaryUrl[splitDictionaryUrl.length - 2];
     const updateProgress = (message: string) => {
       const headerMessage = concepts
           .map(concept => concept.id)
           .join(", ");
 
-      inProgressList = `${dictionaryName} - Adding ${conceptOrConcepts}: ${headerMessage}--${message}`;
+      inProgressList = `Adding ${conceptOrConcepts}: ${headerMessage}--${message}`;
       dispatch(
           progressAction(
               indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex),
@@ -355,12 +352,17 @@ export const recursivelyAddConceptsToDictionaryAction = (
         updateProgress
     );
 
+    const importMeta: ImportMetaData = {
+      dictionary: dictionaryUrl,
+      dateTime: moment().toString(),
+    };
+
     createLocalStorageObject('notification');
     const index = addToLocalStorageObject('notification','inProgressList', inProgressList || "");
     addToLocalStorageObject('notification','loadingList', true);
     addToLocalStorageObject('notification','erroredList', null);
     addToLocalStorageObject('notification','successList', "");
-
+    addToLocalStorageObject("notification", "importMetaDataList", importMeta);
 
     updateProgress(
         referencesToAdd.length

@@ -1,24 +1,25 @@
 import React from "react";
 import {
-  Card,
-  CardContent,
+  Chip,
   Grid,
   List,
-  ListItem,
-  ListSubheader,
-  makeStyles,
   Typography
 } from "@material-ui/core";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import ErrorIcon from '@material-ui/icons/Error';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { AppState } from "../redux";
 import {
   addConceptsToDictionaryErrorListSelector,
   addConceptsToDictionaryLoadingListSelector,
   addConceptsToDictionaryProgressListSelector,
-  buildAddConceptToDictionaryMessage
+  buildAddConceptToDictionaryMessage,
+  ImportMetaData,
 } from "../apps/dictionaries";
 import { connect } from "react-redux";
 import Header from "./Header";
 import { getLocalStorageObject } from "../redux/localStorageUtils";
+import NotificationCard from "./NotificationCard";
 
 interface Props {
   loadingList?: (boolean | undefined)[];
@@ -27,14 +28,6 @@ interface Props {
   successList?: ({ payload: {} } | undefined)[];
 }
 const SEPARATOR = "--";
-const useStyles = makeStyles({
-  card: {
-    width: "100%"
-  },
-  scrollLongText: {
-    overflowX: "scroll"
-  }
-});
 
 const ActionsInProgressPage: React.FC<Props> = ({
   loadingList = [],
@@ -57,7 +50,7 @@ const ActionsInProgressPage: React.FC<Props> = ({
     .filter((item: any) => item)
     .reverse() as string[];
 
-  const successfullItems = loadingListLocalStorage
+  const successfulItems = loadingListLocalStorage
     .map((loading: boolean | undefined, index: number) =>
       typeof loading == "boolean" && !loading && !erroredListLocalStorage[index]
         ? {
@@ -81,93 +74,78 @@ const ActionsInProgressPage: React.FC<Props> = ({
     .filter((item: any) => item && item.progress)
     .reverse() as { error: string; progress: string }[];
 
-  const classes = useStyles();
+  const importMetaDataItemsList: ImportMetaData[] = [];
+
+  const importMetaDataItems = getLocalStorageObject({
+    name: "notification",
+    key: "importMetaDataList",
+    value: importMetaDataItemsList,
+  }).reverse() as ImportMetaData[];
 
   return (
     <Header title="Progress Notifications">
       <Grid item xs={6}>
         {inProgressItems.length +
         erroredItems.length +
-        successfullItems.length ? null : (
+        successfulItems.length ? null : (
           <Typography align="center">
             Your actions in this session will appear here
           </Typography>
         )}
         {!inProgressItems.length ? null : (
-          <List
-            component="div"
-            subheader={
-              <ListSubheader component="div">In progress</ListSubheader>
-            }
-          >
-            {inProgressItems.map(item => (
-
-              <ListItem key={item}>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <Typography
-                      noWrap
-                      variant="subtitle1"
-                      className={classes.scrollLongText}
-                    >
-                      {item.split(SEPARATOR)[0]}
-                    </Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
-                      {item.split(SEPARATOR)[1] || ""}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </ListItem>
+            <List
+                subheader={
+                  <Chip
+                      label='In Progress'
+                      icon={<AutorenewIcon />}
+                  />
+                }
+            >
+            {inProgressItems.map((item, index) => (
+                <NotificationCard
+                    key={index}
+                    headerMessage={item.split(SEPARATOR)[0]}
+                    subHeaderMessage={item.split(SEPARATOR)[1] || ""}
+                    importMetaData={importMetaDataItems[index]}
+                />
             ))}
           </List>
         )}
         {!erroredItems.length ? null : (
-          <List
-            component="div"
-            subheader={<ListSubheader component="div">Failed</ListSubheader>}
-          >
-            {erroredItems.map(item => (
-              <ListItem key={item.progress}>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <Typography
-                      noWrap
-                      variant="subtitle1"
-                      className={classes.scrollLongText}
-                    >
-                      {item.progress.split(SEPARATOR)[0]}
-                    </Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
-                      {item.error}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </ListItem>
+            <List
+                  subheader={
+                    <Chip
+                        label='Failed'
+                        icon={<ErrorIcon />}
+                    />
+                  }
+            >
+            {erroredItems.map((item, index) => (
+                <NotificationCard
+                    key={index}
+                    headerMessage={item.progress.split(SEPARATOR)[0]}
+                    subHeaderMessage={item.error}
+                    importMetaData={importMetaDataItems[index]}
+                />
             ))}
           </List>
         )}
-        {!successfullItems.length ? null : (
-          <List
-            component="div"
-            subheader={<ListSubheader component="div">Completed</ListSubheader>}
-          >
-            {successfullItems.map(item => (
-              <ListItem key={item.progress}>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <Typography
-                      noWrap
-                      variant="subtitle1"
-                      className={classes.scrollLongText}
-                    >
-                      {item.progress.split(SEPARATOR)[0]}
-                    </Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
-                      {buildAddConceptToDictionaryMessage(item.result)}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </ListItem>
+        {!successfulItems.length ? null : (
+            <List
+                subheader={
+                  <Chip
+                      label='Completed'
+                      icon={<CheckCircleIcon />}
+                  />
+                }
+            >
+            {successfulItems.map((item, index) => (
+                <NotificationCard
+                    key={index}
+                    headerMessage={item.progress.split(SEPARATOR)[0]}
+                    subHeaderMessage={buildAddConceptToDictionaryMessage(item.result)}
+                    importMetaData={importMetaDataItems[index]}
+                />
             ))}
           </List>
         )}

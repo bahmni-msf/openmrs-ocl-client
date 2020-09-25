@@ -19,8 +19,8 @@ describe('localStorageUtils',() => {
     it('should create a new object in local storage if there is no existing object with `notification` name ',() => {
         mockLocalStorage(null);
         createLocalStorageObject("notification");
-        expect(localStorage.getItem).toHaveBeenCalledTimes(7);
-        expect(localStorage.setItem).toHaveBeenCalledTimes(6);
+        expect(localStorage.getItem).toHaveBeenCalledTimes(8);
+        expect(localStorage.setItem).toHaveBeenCalledTimes(7);
    });
 
     it('should not create a object in local storage if `notification` object is already there',() => {
