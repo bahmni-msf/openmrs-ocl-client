@@ -330,8 +330,6 @@ export const recursivelyAddConceptsToDictionaryAction = (
     const thisOrThese = concepts.length > 1 ? "these" : "this";
     const actionIndex =
         addConceptsToDictionaryProgressListSelector(getState())?.length || 0;
-    const splitDictionaryUrl = dictionaryUrl.split('/');
-    const dictionaryName = splitDictionaryUrl[splitDictionaryUrl.length - 2];
     const updateProgress = (message: string) => {
       const headerMessage = concepts
           .map(concept => concept.id)

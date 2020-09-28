@@ -52,7 +52,6 @@ const NotificationCard: React.FC<Props> = ({
 
     const dictionaryNameFromUrl = (url: string): string => {
         let words = url.split("/");
-        console.log(words);
         return words[words.length - 2];
     };
 
