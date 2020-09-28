@@ -13,20 +13,18 @@ import { AppState } from "../redux";
 import {
   addConceptsToDictionaryErrorListSelector,
   addConceptsToDictionaryLoadingListSelector,
-  addConceptsToDictionaryProgressListSelector, APIDictionary,
+  addConceptsToDictionaryProgressListSelector,
   buildAddConceptToDictionaryMessage
 } from "../apps/dictionaries";
 import { connect } from "react-redux";
 import Header from "./Header";
-import {dictionarySelector} from "../apps/dictionaries/redux";
-import { getLocalStorageObject, updateLocalStorageArray} from "../redux/localStorageUtils";
+import { getLocalStorageObject } from "../redux/localStorageUtils";
 
 interface Props {
   loadingList?: (boolean | undefined)[];
   inProgressList?: (string | undefined)[];
   erroredList?: [];
   successList?: ({ payload: {} } | undefined)[];
-  dictionary?: APIDictionary;
 }
 const SEPARATOR = "--";
 const useStyles = makeStyles({
@@ -42,37 +40,15 @@ const ActionsInProgressPage: React.FC<Props> = ({
   loadingList = [],
   inProgressList = [],
   erroredList = [],
-  successList = [],
-  dictionary
+  successList = []
 }) => {
-  const dictionaryName = dictionary?.name+"-" || "";
-  const inProgressListLocalStorage = inProgressList?.length > 0 ? updateLocalStorageArray({
-    name:'notification',
-    key: 'inProgressList',
-    value: dictionaryName + inProgressList[inProgressList.length - 1] ,
-    list: inProgressList
-  }) : getLocalStorageObject({name:'notification', key:'inProgressList', value: inProgressList});
+  const inProgressListLocalStorage = getLocalStorageObject({name:'notification', key:'inProgressList', value: inProgressList});
 
-  const loadingListLocalStorage = loadingList?.length > 0 ? updateLocalStorageArray({
-      name:'notification',
-      key: 'loadingList',
-      value: loadingList[loadingList.length - 1],
-      list: loadingList
-    }) : getLocalStorageObject({name:'notification', key:'loadingList', value: loadingList});
+  const loadingListLocalStorage = getLocalStorageObject({name:'notification', key:'loadingList', value: loadingList});
 
-  const erroredListLocalStorage = erroredList?.length > 0 ? updateLocalStorageArray({
-    name:'notification',
-    key: 'erroredList',
-    value: erroredList[erroredList.length - 1],
-    list: erroredList
-  }) : getLocalStorageObject({name:'notification', key:'erroredList', value: erroredList});
+  const erroredListLocalStorage = getLocalStorageObject({name:'notification', key:'erroredList', value: erroredList});
 
-  const successListLocalStorage = successList?.length > 0 ? updateLocalStorageArray({
-    name:'notification',
-    key: 'successList',
-    value: successList[successList.length - 1],
-    list: successList
-  }) : getLocalStorageObject({name:'notification', key:'successList', value: successList});
+  const successListLocalStorage = getLocalStorageObject({name:'notification', key:'successList', value: successList});
 
   const inProgressItems = loadingListLocalStorage
     .map((loading: boolean | undefined, index: number) =>
@@ -206,7 +182,6 @@ const mapStateToProps = (state: AppState) => ({
   inProgressList: addConceptsToDictionaryProgressListSelector(state),
   erroredList: addConceptsToDictionaryErrorListSelector(state),
   successList: state.dictionaries.addReferencesResults,
-  dictionary: dictionarySelector(state),
 });
 const mapDispatchToProps = {};
 
