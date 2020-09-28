@@ -13,7 +13,8 @@ import {
   addConceptsToDictionaryErrorListSelector,
   addConceptsToDictionaryLoadingListSelector,
   addConceptsToDictionaryProgressListSelector,
-  buildAddConceptToDictionaryMessage
+  buildAddConceptToDictionaryMessage,
+  ImportMetaData,
 } from "../apps/dictionaries";
 import { connect } from "react-redux";
 import Header from "./Header";
@@ -49,7 +50,7 @@ const ActionsInProgressPage: React.FC<Props> = ({
     .filter((item: any) => item)
     .reverse() as string[];
 
-  const successfullItems = loadingListLocalStorage
+  const successfulItems = loadingListLocalStorage
     .map((loading: boolean | undefined, index: number) =>
       typeof loading == "boolean" && !loading && !erroredListLocalStorage[index]
         ? {
@@ -73,12 +74,20 @@ const ActionsInProgressPage: React.FC<Props> = ({
     .filter((item: any) => item && item.progress)
     .reverse() as { error: string; progress: string }[];
 
+  const importMetaDataItemsList: ImportMetaData[] = [];
+
+  const importMetaDataItems = getLocalStorageObject({
+    name: "notification",
+    key: "importMetaDataList",
+    value: importMetaDataItemsList,
+  }).reverse() as ImportMetaData[];
+
   return (
     <Header title="Progress Notifications">
       <Grid item xs={6}>
         {inProgressItems.length +
         erroredItems.length +
-        successfullItems.length ? null : (
+        successfulItems.length ? null : (
           <Typography align="center">
             Your actions in this session will appear here
           </Typography>
@@ -89,15 +98,15 @@ const ActionsInProgressPage: React.FC<Props> = ({
                   <Chip
                       label='In Progress'
                       icon={<AutorenewIcon />}
-                      color='secondary'
                   />
                 }
             >
             {inProgressItems.map((item, index) => (
                 <NotificationCard
+                    key={index}
                     headerMessage={item.split(SEPARATOR)[0]}
                     subHeaderMessage={item.split(SEPARATOR)[1] || ""}
-                    index={index}
+                    importMetaData={importMetaDataItems[index]}
                 />
             ))}
           </List>
@@ -108,34 +117,34 @@ const ActionsInProgressPage: React.FC<Props> = ({
                     <Chip
                         label='Failed'
                         icon={<ErrorIcon />}
-                        color='secondary'
                     />
                   }
             >
             {erroredItems.map((item, index) => (
                 <NotificationCard
+                    key={index}
                     headerMessage={item.progress.split(SEPARATOR)[0]}
                     subHeaderMessage={item.error}
-                    index={index}
+                    importMetaData={importMetaDataItems[index]}
                 />
             ))}
           </List>
         )}
-        {!successfullItems.length ? null : (
+        {!successfulItems.length ? null : (
             <List
                 subheader={
                   <Chip
                       label='Completed'
                       icon={<CheckCircleIcon />}
-                      color='secondary'
                   />
                 }
             >
-            {successfullItems.map((item, index) => (
+            {successfulItems.map((item, index) => (
                 <NotificationCard
+                    key={index}
                     headerMessage={item.progress.split(SEPARATOR)[0]}
                     subHeaderMessage={buildAddConceptToDictionaryMessage(item.result)}
-                    index={index}
+                    importMetaData={importMetaDataItems[index]}
                 />
             ))}
           </List>
