@@ -92,7 +92,7 @@ const ActionsInProgressPage: React.FC<Props> = ({
             Your actions in this session will appear here
           </Typography>
         )}
-        {!inProgressItems.length ? null : (
+        {!inProgressItems.length || !importMetaDataItems.length ? null : (
             <List
                 subheader={
                   <Chip
@@ -111,7 +111,7 @@ const ActionsInProgressPage: React.FC<Props> = ({
             ))}
           </List>
         )}
-        {!erroredItems.length ? null : (
+        {!erroredItems.length || !importMetaDataItems.length? null : (
             <List
                   subheader={
                     <Chip
@@ -130,7 +130,7 @@ const ActionsInProgressPage: React.FC<Props> = ({
             ))}
           </List>
         )}
-        {!successfulItems.length ? null : (
+        {!successfulItems.length || !importMetaDataItems.length ? null : (
             <List
                 subheader={
                   <Chip

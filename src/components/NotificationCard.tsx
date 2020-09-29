@@ -32,13 +32,14 @@ const NotificationCard: React.FC<Props> = ({
                                            }) => {
     const classes = useStyles();
 
-    const notificationDateTime = new Date(importMetaData.dateTime)
+    const [importDateTime, importDictionary] = [new Date(importMetaData.dateTime), importMetaData.dictionary];
+
 
     const showImportDateTime = () => {
         return (
             <Typography variant='subtitle2' color='textSecondary' className={classes.cardFooter}>
-                <Tooltip title={moment(notificationDateTime).format("DD MMM YYYY HH:mm")} enterDelay={700}>
-                    <span>{moment(notificationDateTime).fromNow()}</span>
+                <Tooltip title={moment(importDateTime).format("DD MMM YYYY HH:mm")} enterDelay={700}>
+                    <span>{moment(importDateTime).fromNow()}</span>
                 </Tooltip>
             </Typography>
         );
@@ -51,9 +52,9 @@ const NotificationCard: React.FC<Props> = ({
                 color='primary'
                 size='small'
                 className={classes.chip}
-                label={dictionaryNameFromUrl(importMetaData.dictionary)}
+                label={dictionaryNameFromUrl(importDictionary)}
                 component='a'
-                href={importMetaData.dictionary}
+                href={importDictionary}
                 clickable
             />
             </Tooltip>
@@ -61,7 +62,9 @@ const NotificationCard: React.FC<Props> = ({
     };
 
     return (
-        <ListItem>
+        <>
+        {!importMetaData ? null:
+                (<ListItem>
             <Card className={classes.card}>
                 <CardContent className={classes.cardContent}>
                     {showDictionaryName()}
@@ -77,7 +80,8 @@ const NotificationCard: React.FC<Props> = ({
                 </CardContent>
                 <CardActions>{showImportDateTime()}</CardActions>
             </Card>
-        </ListItem>
+        </ListItem>)}
+        </>
     )
 }
 
