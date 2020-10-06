@@ -31,6 +31,7 @@ interface Props {
   open: boolean;
   handleClose: () => void;
   notification: NotificationItem;
+  importDateTime: string;
 }
 
 const useStyles = makeStyles({
@@ -56,9 +57,12 @@ const useStyles = makeStyles({
   }
 });
 
-const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification }) => {
+const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification, importDateTime }) => {
 
   const classes = useStyles();
+
+  const dictionaryName = notification.meta ? notification.meta[0].split("/")[4] : "";
+  const sourceName = notification.result.length > 0 ? notification.result[0].expression.split("/")[4] : "";
 
   const getParentConceptIds = () => {
     const meta = notification.meta;
@@ -91,9 +95,6 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
   };
 
   const getDialogTitle = () => {
-    const dictionaryName = notification.meta ? notification.meta[0].split("/")[4] : "";
-
-    const sourceName = notification.result.length > 0 ? notification.result[0].expression.split("/")[4] : "";
     return (
         <Typography variant='h5'>
           {dictionaryName} - Adding concepts from {sourceName}
@@ -118,7 +119,6 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
       return createData(getConceptId(row), getConceptType(row), getStatus(row), getReason(row));
     });
   };
-
   const summaryRowsToDisplay = getSummaryRowsToDisplay();
 
   type Order = 'asc' | 'desc';
@@ -214,8 +214,8 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
                   className={classes.fullWidth}
                   headers={csvHeaders}
                   data={summaryRowsToDisplay}
-                  filename={"summary.csv"}
-                  target="_blank"
+                  filename={`${dictionaryName}_${importDateTime}.csv`}
+                  enclosingCharacter={``}
               >
                 <Button className={classes.exportToCSV} fullWidth color="primary">
                   Export to CSV
