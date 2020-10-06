@@ -30,11 +30,15 @@ interface Props {
 
 const useStyles = makeStyles({
   dialogTitle: {
-    textAlign: "center",
-    textTransform: "capitalize"
+    textAlign: "center"
   },
   tableContainer: {
     display: "contents"
+  },
+  tablePagination: {
+    bottom: "0",
+    position: "sticky",
+    backgroundColor: "#fafafa"
   },
   noPadding: {
     padding: "0px"
@@ -111,6 +115,8 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
     });
   };
 
+  const summaryRowsToDisplay = getSummaryRowsToDisplay();
+
   type Order = 'asc' | 'desc';
 
   const [order, setOrder] = React.useState<Order>("desc");
@@ -152,7 +158,7 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
   }
 
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -164,7 +170,7 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
     setOrder("desc");
     setOrderBy("status");
     setPage(0);
-    setRowsPerPage(5);
+    setRowsPerPage(10);
   };
 
   const resetAndClose = () => {
@@ -181,7 +187,7 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
             onRequestSort={handleRequestSort}
         />
         <TableBody>
-          {stableSort(getSummaryRowsToDisplay(), getComparator(order, orderBy))
+          {stableSort(summaryRowsToDisplay, getComparator(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row) => (
               <TableRow key={row.conceptId} data-testid={row.conceptId}>
@@ -198,9 +204,10 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
 
   const getTablePagination = () => {
     return <TablePagination
+        className={classes.tablePagination}
         rowsPerPageOptions={[5, 10, 25, 50, 100]}
         component="div"
-        count={getSummaryRowsToDisplay().length}
+        count={summaryRowsToDisplay.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}
