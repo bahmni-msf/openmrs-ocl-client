@@ -74,7 +74,7 @@ const NotificationCard: React.FC<Props> = ({
                     >
                         {headerMessage}
                     </Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
+                    <Typography noWrap variant="subtitle2" color="textSecondary">
                         {subHeaderMessage}
                     </Typography>
                 </CardContent>
