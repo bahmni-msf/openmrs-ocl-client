@@ -1,11 +1,11 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import NotificationDetails from "../components/NotificationDetails";
+import NotificationDetails from "../../components/NotificationDetails";
 import {
   NotificationItem,
   NotificationItemRow
-} from "../types";
+} from "../../types";
 
 type notificationDetailsProps = React.ComponentProps<typeof NotificationDetails>;
 

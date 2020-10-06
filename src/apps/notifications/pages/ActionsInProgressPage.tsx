@@ -64,7 +64,7 @@ const ActionsInProgressPage: React.FC<Props> = ({
           }
         : null
     )
-    .filter((notification: any) => notification && notification.progress)
+    .filter((notification: NotificationItem) => notification && notification.progress)
     .reverse() as { result: []; progress: string }[];
 
   const erroredItems = loadingListLocalStorage
@@ -76,7 +76,7 @@ const ActionsInProgressPage: React.FC<Props> = ({
           }
         : null
     )
-    .filter((notification: any) => notification && notification.progress)
+    .filter((notification: NotificationItem) => notification && notification.progress)
     .reverse() as { error: string; progress: string }[];
 
   const importMetaDataItemsList: ImportMetaData[] = [];

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from '@material-ui/core';
 import { render } from '@testing-library/react';
-import { EnhancedNotificationSummaryTableHead } from '../components/EnhancedNotificationSummaryTableHead';
+import { EnhancedNotificationSummaryTableHead } from '../../components/EnhancedNotificationSummaryTableHead';
 
 type enhancedNotificationSummaryTableHeadProps = React.ComponentProps<typeof EnhancedNotificationSummaryTableHead>;
 const baseProps: enhancedNotificationSummaryTableHeadProps = {

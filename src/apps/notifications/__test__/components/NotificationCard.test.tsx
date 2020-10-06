@@ -1,9 +1,9 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import NotificationCard from "../components/NotificationCard";
+import NotificationCard from "../../components/NotificationCard";
 import { BrowserRouter as Router } from "react-router-dom";
-import { NotificationItem, NotificationItemRow } from "../types";
+import { NotificationItem, NotificationItemRow } from "../../types";
 
 type notificationCardProps = React.ComponentProps<typeof NotificationCard>;
 
