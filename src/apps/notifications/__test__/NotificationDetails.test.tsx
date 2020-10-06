@@ -34,7 +34,6 @@ function renderUI(props: Partial<notificationDetailsProps> = {}) {
 }
 
 describe("NotificationDetails", () => {
-
   it("should show the correct title", () => {
     const { queryByTestId } = renderUI();
     const title = queryByTestId('title') || {textContent:null};
@@ -48,7 +47,6 @@ describe("NotificationDetails", () => {
     fireEvent.click(closeButton);
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
-
 });
 
 describe("Notification Summary Table", () => {
@@ -58,19 +56,16 @@ describe("Notification Summary Table", () => {
     added: true,
     message: "concept imported successfully"
   };
-
   const notificationItemRow2: NotificationItemRow ={
     expression: "/orgs/testOrg/sources/testSource/concepts/testConceptID2/",
     added: false,
     message: "concept import failed due to conflicts"
   };
-
   const notificationItemRow3: NotificationItemRow ={
     expression: "/orgs/testOrg/sources/testSource/concepts/testDependentConceptID1/",
     added: true,
     message: "concept imported successfully"
   };
-
   const notificationItemRow4: NotificationItemRow ={
     expression: "/orgs/testOrg/sources/testSource/concepts/testDependentConceptID2/",
     added: false,

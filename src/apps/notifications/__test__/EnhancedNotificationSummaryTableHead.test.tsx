@@ -8,7 +8,7 @@ const baseProps: enhancedNotificationSummaryTableHeadProps = {
     order: "asc",
     orderBy: "status",
     onRequestSort: jest.fn
-  };
+};
   
 function renderUI(props: Partial<enhancedNotificationSummaryTableHeadProps> = {}) {
     return render(
@@ -18,10 +18,9 @@ function renderUI(props: Partial<enhancedNotificationSummaryTableHeadProps> = {}
     );
 }
 
-
 describe("EnhancedNotificationSummaryTableHead", () => {
     it('match snapshot', () => {
         const { container } = renderUI();
         expect(container).toMatchSnapshot();
     })
-})
+});

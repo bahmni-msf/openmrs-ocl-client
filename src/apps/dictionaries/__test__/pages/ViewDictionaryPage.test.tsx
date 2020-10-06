@@ -94,7 +94,7 @@ const dictionariesState: DictionaryState = {
 const conceptState: ConceptsState = {
     concepts: { items: [] },
     mappings: [],
-    activeConcepts: {items: [] }
+    activeConcepts: { items: [] }
 };
 
 const sourceState: SourceState = {

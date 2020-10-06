@@ -7,15 +7,15 @@ import { NotificationItem, NotificationItemRow } from "../types";
 
 type notificationCardProps = React.ComponentProps<typeof NotificationCard>;
 
-let notificationItemRow: NotificationItemRow ={ 
+const notificationItemRow: NotificationItemRow ={
   expression: "",
   added: true,
   message: "1 notification added"
-}
-let notificationItem: NotificationItem = {
+};
+const notificationItem: NotificationItem = {
   result: [notificationItemRow],
   progress: ""
-}
+};
 
 const openNotificationDetails = jest.fn();
 const baseProps: notificationCardProps = {
@@ -56,5 +56,4 @@ describe("NotificationCard", () => {
     fireEvent.click(viewSummaryLink);
     expect(openNotificationDetails).toHaveBeenCalledTimes(1)
   });
-
 });

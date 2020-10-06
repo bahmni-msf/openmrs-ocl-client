@@ -8,7 +8,7 @@ import {
 import { AuthenticationRequired, LoginPage } from "./apps/authentication";
 import { Provider } from "react-redux";
 import store from "./redux";
-import {  InProgressPage } from "./apps/notifications";
+import { InProgressPage } from "./apps/notifications";
 import { Header, NavDrawer } from "./components";
 import DictionaryRoutes, {
   CreateDictionaryPage,

@@ -21,7 +21,7 @@ import Header from "../../../components/Header";
 import { getLocalStorageObject } from "../../../redux/localStorageUtils";
 import NotificationCard from "../components/NotificationCard";
 import NotificationDetails from "../components/NotificationDetails";
-import {NotificationItem} from "../types";
+import { NotificationItem } from "../types";
 
 interface Props {
   loadingList?: (boolean | undefined)[];
