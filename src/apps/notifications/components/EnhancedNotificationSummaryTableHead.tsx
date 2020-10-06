@@ -51,6 +51,7 @@ export function EnhancedNotificationSummaryTableHead(props: EnhancedNotification
     return (
         <TableHead data-testid="enhancedTableHead">
             <TableRow>
+                <TableCell>S.No</TableCell>
                 {headCells.map((headCell) => (
                     <TableCell
                         className={classes.tableHeadCell}

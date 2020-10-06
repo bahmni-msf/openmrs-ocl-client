@@ -189,8 +189,9 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
         <TableBody>
           {stableSort(summaryRowsToDisplay, getComparator(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((row) => (
+            .map((row, index) => (
               <TableRow key={row.conceptId} data-testid={row.conceptId}>
+                <TableCell>{(page * rowsPerPage) + index + 1}</TableCell>
                 <TableCell>{row.conceptId}</TableCell>
                 <TableCell>{row.conceptType}</TableCell>
                 <TableCell>{row.status}</TableCell>
