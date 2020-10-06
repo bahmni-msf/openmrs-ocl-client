@@ -20,11 +20,12 @@ import {
   NotificationItemRow,
   NotificationItem
 } from "../types";
-import { EnhancedNotificationSummaryTableHead } from "./EnhancedNotificationSummaryTableHead"
+import { EnhancedNotificationSummaryTableHead } from "./EnhancedNotificationSummaryTableHead";
 import {
   getComparator,
   stableSort
 } from "../../../utils";
+import { CSVLink } from "react-csv";
 
 interface Props {
   open: boolean;
@@ -46,6 +47,12 @@ const useStyles = makeStyles({
   },
   noPadding: {
     padding: "0px"
+  },
+  fullWidth: {
+    width: "100%"
+  },
+  exportToCSV: {
+    display: "inline-block"
   }
 });
 
@@ -184,6 +191,13 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
     />;
   };
 
+  const csvHeaders = [
+    { label: 'Concept ID', key: 'conceptId' },
+    { label: 'Concept Type', key: 'conceptType' },
+    { label: 'Status', key: 'status' },
+    { label: 'Reasons', key: 'reasons' }
+  ];
+
   return (
       <>
         <Dialog data-testid="notification-details-dialog" onClose={resetAndClose} open={open} fullWidth maxWidth = {'md'}>
@@ -196,9 +210,17 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
           </DialogContent>
           <DialogActions>
             <ButtonGroup fullWidth color="primary" variant="text" size="medium">
-              <Button>
-                Export To CSV
-              </Button>
+              <CSVLink
+                  className={classes.fullWidth}
+                  headers={csvHeaders}
+                  data={summaryRowsToDisplay}
+                  filename={"summary.csv"}
+                  target="_blank"
+              >
+                <Button className={classes.exportToCSV} fullWidth color="primary">
+                  Export to CSV
+                </Button>
+              </CSVLink>
               <Button onClick={resetAndClose} color="secondary">Close</Button>
             </ButtonGroup>
           </DialogActions>
