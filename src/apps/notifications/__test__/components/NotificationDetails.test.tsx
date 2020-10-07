@@ -49,8 +49,41 @@ describe("NotificationDetails", () => {
   });
 });
 
-describe("Notification Summary Table", () => {
+describe("Notification Summary Table Header", () => {
+  let enhancedTableHeadRowData: NodeListOf<HTMLTableHeaderCellElement> | never[];
+  beforeEach(() => {
+    const queries = renderUI();
+    const queryByTestId = queries.queryByTestId;
+    const enhancedTableHeadRow = queryByTestId('enhancedTableHead');
+    enhancedTableHeadRowData = enhancedTableHeadRow ? enhancedTableHeadRow.querySelectorAll("th"): [];
+  });
 
+  it("should have 5 columns in table header", () => {
+    expect(enhancedTableHeadRowData.length).toEqual(5);
+  });
+
+  it("should have the correct table header for S.No", () => {
+    expect(enhancedTableHeadRowData[0].textContent).toBe("S.No");
+  });
+
+  it("should have the correct table header for Concept ID", () => {
+    expect(enhancedTableHeadRowData[1].textContent).toBe("Concept ID");
+  });
+
+  it("should have the correct table header for Concept Type", () => {
+    expect(enhancedTableHeadRowData[2].textContent).toBe("Concept Type");
+  });
+
+  it("should have the correct table header for Status", () => {
+    expect(enhancedTableHeadRowData[3].textContent).toBe("Statussorted descending");
+  });
+
+  it("should have the correct table header for Reasons", () => {
+    expect(enhancedTableHeadRowData[4].textContent).toBe("Reasons");
+  });
+});
+
+describe("Notification Summary Table data", () => {
   const notificationItemRow1: NotificationItemRow ={
     expression: "/orgs/testOrg/sources/testSource/concepts/testConceptID1/",
     added: true,
@@ -86,59 +119,115 @@ describe("Notification Summary Table", () => {
     queryByTestId = queries.queryByTestId;
   });
 
-  it("should have the correct table headers", () => {
-    const enhancedTableHead = queryByTestId('enhancedTableHead');
-    const enhancedTableHeadData = enhancedTableHead ? enhancedTableHead.querySelectorAll("th"): [];
+  describe("Notification Summary Table data - Parent Concept Imported", () => {
+    let tableRowData: NodeListOf<HTMLElement>;
+    beforeEach(() => {
+      const tableRow = queryByTestId('testConceptID1');
+      tableRowData = tableRow ? tableRow.querySelectorAll("td"): [];
+    });
 
-    expect(enhancedTableHeadData.length).toEqual(5);
-    expect(enhancedTableHeadData[0].textContent).toBe("S.No");
-    expect(enhancedTableHeadData[1].textContent).toBe("Concept ID");
-    expect(enhancedTableHeadData[2].textContent).toBe("Concept Type");
-    expect(enhancedTableHeadData[3].textContent).toBe("Statussorted descending");
-    expect(enhancedTableHeadData[4].textContent).toBe("Reasons");
+    it("should have 5 columns in a row", () => {
+      expect(tableRowData.length).toEqual(5);
+    });
+
+    it("should have the correct data for Concept ID", () => {
+      expect(tableRowData[1].textContent).toBe("testConceptID1");
+    });
+
+    it("should have the correct data for Concept Type", () => {
+      expect(tableRowData[2].textContent).toBe("Parent");
+    });
+
+    it("should have the correct data for Status", () => {
+      expect(tableRowData[3].textContent).toBe("Imported");
+    });
+
+    it("should have the correct data for Reasons", () => {
+      expect(tableRowData[4].textContent).toBe("concept imported successfully");
+    });
   });
 
-  it("should have the correct table data in appropriate columns - Parent Concept Imported", () => {
-    const tableRow = queryByTestId('testConceptID1');
-    const tableRowData = tableRow ? tableRow.querySelectorAll("td"): [];
+  describe("Notification Summary Table data - Parent Concept Skipped", () => {
+    let tableRowData: NodeListOf<HTMLElement>;
+    beforeEach(() => {
+      const tableRow = queryByTestId('testConceptID2');
+      tableRowData = tableRow ? tableRow.querySelectorAll("td"): [];
+    });
 
-    expect(tableRowData.length).toEqual(5);
-    expect(tableRowData[1].textContent).toBe("testConceptID1");
-    expect(tableRowData[2].textContent).toBe("Parent");
-    expect(tableRowData[3].textContent).toBe("Imported");
-    expect(tableRowData[4].textContent).toBe("concept imported successfully");
+    it("should have 5 columns in a row", () => {
+      expect(tableRowData.length).toEqual(5);
+    });
+
+    it("should have the correct data for Concept ID", () => {
+      expect(tableRowData[1].textContent).toBe("testConceptID2");
+    });
+
+    it("should have the correct data for Concept Type", () => {
+      expect(tableRowData[2].textContent).toBe("Parent");
+    });
+
+    it("should have the correct data for Status", () => {
+      expect(tableRowData[3].textContent).toBe("Skipped");
+    });
+
+    it("should have the correct data for Reasons", () => {
+      expect(tableRowData[4].textContent).toBe("concept import failed due to conflicts");
+    });
   });
 
-  it("should have the correct table data in appropriate columns - Parent Concept Failed", () => {
-    const tableRow = queryByTestId('testConceptID2');
-    const tableRowData = tableRow ? tableRow.querySelectorAll("td"): [];
+  describe("Notification Summary Table data - Dependent Concept Imported", () => {
+    let tableRowData: NodeListOf<HTMLElement>;
+    beforeEach(() => {
+      const tableRow = queryByTestId('testDependentConceptID1');
+      tableRowData = tableRow ? tableRow.querySelectorAll("td"): [];
+    });
 
-    expect(tableRowData.length).toEqual(5);
-    expect(tableRowData[1].textContent).toBe("testConceptID2");
-    expect(tableRowData[2].textContent).toBe("Parent");
-    expect(tableRowData[3].textContent).toBe("Skipped");
-    expect(tableRowData[4].textContent).toBe("concept import failed due to conflicts");
+    it("should have 5 columns in a row", () => {
+      expect(tableRowData.length).toEqual(5);
+    });
+
+    it("should have the correct data for Concept ID", () => {
+      expect(tableRowData[1].textContent).toBe("testDependentConceptID1");
+    });
+
+    it("should have the correct data for Concept Type", () => {
+      expect(tableRowData[2].textContent).toBe("Dependent");
+    });
+
+    it("should have the correct data for Status", () => {
+      expect(tableRowData[3].textContent).toBe("Imported");
+    });
+
+    it("should have the correct data for Reasons", () => {
+      expect(tableRowData[4].textContent).toBe("concept imported successfully");
+    });
   });
 
-  it("should have the correct table data in appropriate columns - Dependent Concept Imported", () => {
-    const tableRow = queryByTestId('testDependentConceptID1');
-    const tableRowData = tableRow ? tableRow.querySelectorAll("td"): [];
+  describe("Notification Summary Table data - Dependent Concept Skipped", () => {
+    let tableRowData: NodeListOf<HTMLElement>;
+    beforeEach(() => {
+      const tableRow = queryByTestId('testDependentConceptID2');
+      tableRowData = tableRow ? tableRow.querySelectorAll("td"): [];
+    });
 
-    expect(tableRowData.length).toEqual(5);
-    expect(tableRowData[1].textContent).toBe("testDependentConceptID1");
-    expect(tableRowData[2].textContent).toBe("Dependent");
-    expect(tableRowData[3].textContent).toBe("Imported");
-    expect(tableRowData[4].textContent).toBe("concept imported successfully");
-  });
+    it("should have 5 columns in a row", () => {
+      expect(tableRowData.length).toEqual(5);
+    });
 
-  it("should have the correct table data in appropriate columns - Dependent Concept Failed", () => {
-    const tableRow = queryByTestId('testDependentConceptID2');
-    const tableRowData = tableRow ? tableRow.querySelectorAll("td"): [];
+    it("should have the correct data for Concept ID", () => {
+      expect(tableRowData[1].textContent).toBe("testDependentConceptID2");
+    });
 
-    expect(tableRowData.length).toEqual(5);
-    expect(tableRowData[1].textContent).toBe("testDependentConceptID2");
-    expect(tableRowData[2].textContent).toBe("Dependent");
-    expect(tableRowData[3].textContent).toBe("Skipped");
-    expect(tableRowData[4].textContent).toBe("concept import failed due to conflicts");
+    it("should have the correct data for Concept Type", () => {
+      expect(tableRowData[2].textContent).toBe("Dependent");
+    });
+
+    it("should have the correct data for Status", () => {
+      expect(tableRowData[3].textContent).toBe("Skipped");
+    });
+
+    it("should have the correct data for Reasons", () => {
+      expect(tableRowData[4].textContent).toBe("concept import failed due to conflicts");
+    });
   });
 });
