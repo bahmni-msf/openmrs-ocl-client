@@ -186,7 +186,7 @@ const ConceptSchema = Yup.object().shape<Concept>({
     .of(MappingSchema)
     .min(0),
   retired: Yup.boolean(),
-  extras: ExtrasSchema
+  extras: ExtrasSchema.nullable()
 });
 
 interface Props {
@@ -636,7 +636,7 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
           size="small"
         />
         <FormControl fullWidth margin="dense" size="small">
-          <InputLabel htmlFor="datatype">Allow Decimal</InputLabel>
+          <InputLabel htmlFor="extras.precise">Allow Decimal</InputLabel>
           <Field
             name="extras.precise"
             id="extras.precise"
@@ -656,6 +656,9 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
               Yes
             </MenuItem>
           </Field>
+          <Typography color="error" variant="caption" component="div">
+            <ErrorMessage name="extras.precise" component="span"/>
+          </Typography>
         </FormControl>
       </Grid>
     </Grid>
